@@ -2,29 +2,14 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>El Universo Sabe 💖</title>
+<title>Nuestra Historia 💖</title>
 
 <style>
 body {
     margin: 0;
-    background: black;
     overflow: hidden;
+    background: black;
     font-family: Arial;
-    color: white;
-}
-
-#btn {
-    position: absolute;
-    bottom: 50px;
-    left: 50%;
-    transform: translateX(-50%);
-    padding: 15px 30px;
-    border-radius: 30px;
-    border: none;
-    background: #ff3d8b;
-    color: white;
-    font-size: 20px;
-    cursor: pointer;
 }
 
 #texto {
@@ -32,9 +17,10 @@ body {
     top: 40%;
     width: 100%;
     text-align: center;
-    font-size: 30px;
+    font-size: 32px;
+    color: white;
     opacity: 0;
-    transition: 1.5s;
+    transition: 2s;
 }
 </style>
 </head>
@@ -42,95 +28,115 @@ body {
 <body>
 
 <div id="texto"></div>
-<button id="btn">✨ Pregúntale al universo ✨</button>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
 <script>
 
-let escena = new THREE.Scene();
-let camara = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight,0.1,2000);
-camara.position.z = 600;
+// escena
+let scene = new THREE.Scene();
+let camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight,0.1,5000);
+camera.position.z = 1000;
 
-let render = new THREE.WebGLRenderer();
-render.setSize(window.innerWidth, window.innerHeight);
-document.body.appendChild(render.domElement);
+let renderer = new THREE.WebGLRenderer();
+renderer.setSize(window.innerWidth, window.innerHeight);
+document.body.appendChild(renderer.domElement);
 
 // estrellas
-let geo = new THREE.BufferGeometry();
+let starsGeo = new THREE.BufferGeometry();
 let arr = [];
 
-for(let i=0;i<8000;i++){
+for(let i=0;i<15000;i++){
     arr.push(
-        (Math.random()-0.5)*2000,
-        (Math.random()-0.5)*2000,
-        (Math.random()-0.5)*2000
+        (Math.random()-0.5)*4000,
+        (Math.random()-0.5)*4000,
+        (Math.random()-0.5)*4000
     );
 }
 
-geo.setAttribute('position', new THREE.Float32BufferAttribute(arr,3));
-let mat = new THREE.PointsMaterial({color:0xffffff});
-let estrellas = new THREE.Points(geo,mat);
-escena.add(estrellas);
+starsGeo.setAttribute('position', new THREE.Float32BufferAttribute(arr,3));
+let starsMat = new THREE.PointsMaterial({color:0xffffff, size:1});
+let stars = new THREE.Points(starsGeo,starsMat);
+scene.add(stars);
+
+// luz (ella)
+let luzGeo = new THREE.SphereGeometry(20,32,32);
+let luzMat = new THREE.MeshBasicMaterial({color:0xff4da6});
+let luz = new THREE.Mesh(luzGeo,luzMat);
+luz.visible = false;
+scene.add(luz);
+
+// corazón
+let heartGeo = new THREE.SphereGeometry(100,32,32);
+let heartMat = new THREE.MeshBasicMaterial({color:0xff3366});
+let heart = new THREE.Mesh(heartGeo,heartMat);
+heart.visible = false;
+scene.add(heart);
 
 // audio
 let audio = new Audio("music.mp3");
+audio.play();
 
-let secuencia = [
-    "¿Quién es lo más importante en mi vida?",
-    "...",
-    "Natasha 💖",
-    "¿Quién cambió mi mundo?",
-    "...",
-    "Tú ✨",
-    "¿A quién amo con todo mi corazón?",
-    "...",
-    "A ti ❤️",
-    "Feliz aniversario mi amor 💕"
+// texto
+let frases = [
+    "Antes de ti...",
+    "Todo era vacío...",
+    "Hasta que apareciste tú...",
+    "Y cambiaste mi universo...",
+    "Lo llenaste de luz...",
+    "Y de amor...",
+    "Desde entonces...",
+    "Todo eres tú...",
+    "Feliz aniversario 💖",
+    "30/10/2025 ❤️"
 ];
 
 let i = 0;
 
-document.getElementById("btn").onclick = ()=>{
-    audio.play();
-    document.getElementById("btn").style.display = "none";
-    siguiente();
-};
-
-function siguiente(){
-    if(i >= secuencia.length) return;
+function mostrar(){
+    if(i>=frases.length) return;
 
     let t = document.getElementById("texto");
-    t.innerHTML = secuencia[i];
+    t.innerHTML = frases[i];
     t.style.opacity = 1;
 
     setTimeout(()=>{
         t.style.opacity = 0;
         i++;
-        setTimeout(siguiente,1500);
-    },3000);
+        setTimeout(mostrar,2000);
+    },4000);
 }
 
-// explosión final
-function explosion(){
-    estrellas.material.color.setHex(0xff4da6);
-    estrellas.scale.set(2,2,2);
-}
+setTimeout(mostrar,1000);
 
-// animación
-function animar(){
-    requestAnimationFrame(animar);
+// timeline animación
+function animate(){
+    requestAnimationFrame(animate);
 
-    estrellas.rotation.y += 0.001;
+    let time = Date.now()*0.001;
 
-    if(i >= secuencia.length){
-        explosion();
+    stars.rotation.y += 0.0005;
+
+    // escena progresiva
+    if(i > 2){
+        luz.visible = true;
+        luz.position.x = Math.sin(time)*200;
     }
 
-    render.render(escena,camara);
+    if(i > 4){
+        heart.visible = true;
+        heart.scale.x += 0.01;
+        heart.scale.y += 0.01;
+    }
+
+    if(i > 6){
+        camera.position.z -= 1; // zoom emocional
+    }
+
+    renderer.render(scene,camera);
 }
 
-animar();
+animate();
 
 </script>
 </body>
