@@ -3,147 +3,356 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Para mi Niña - 5 Meses</title>
+    <title>Para mi Niña Preciosa - Felices 5 Meses</title>
+    <link href="https://fonts.googleapis.com/css2?family=Grand+Hotel&family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
     <style>
+        /* --- CORE STYLES (Snoopy-like Palette) --- */
         :root {
-            --color-fondo: #fff5f5;
-            --color-principal: #ff4d6d;
-            --color-secundario: #ffb3c1;
+            --bg-color: #FFEDF0; /* Soft Pastel Pink */
+            --card-color: #FFFFFF;
+            --text-main: #5C5C5C;
+            --text-accent: #FF4757; /* Romantic Red */
+            --border-cute: #FFC0CB;
+            --shadow: 0 8px 15px rgba(255, 71, 87, 0.1);
         }
 
         body {
-            background-color: var(--color-fondo);
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgdmlld0JveD0iMCAwIDIwIDIwIj48ZyBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmNmY2QiIGZpbGwtb3BhY2l0eT0iMC4zNCI+PHBhdGggZD0iTTAgMGg4djhIMHptMTAgMBo4djhIMTB6TTAgMTBoOHY4SDB6bTEwIDEwaDh2OEgxMHoiLz48L2c+PC9nPjwvc3ZnPg=='); /* Subtle dot pattern */
+            font-family: 'Montserrat', sans-serif;
+            color: var(--text-main);
+            margin: 0;
+            padding: 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            margin: 0;
-            padding: 20px;
-            color: #4a4a4a;
+            overflow-x: hidden;
         }
 
-        h1 {
-            color: var(--color-principal);
-            text-align: center;
+        /* --- SNOOPY IMAGE SPOT (Very Important) --- */
+        .character-spot {
+            width: 150px;
+            height: 150px;
             margin-top: 30px;
-            font-size: 2rem;
-            animation: latido 2s infinite;
-        }
-
-        @keyframes latido {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
-        }
-
-        .grid-recuerdos {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 25px;
-            max-width: 1000px;
-            width: 100%;
-            margin-top: 40px;
-        }
-
-        .tarjeta {
-            background: white;
-            padding: 25px;
-            border-radius: 20px;
-            box-shadow: 0 10px 20px rgba(255, 77, 109, 0.1);
-            border: 2px solid var(--color-secundario);
-            transition: all 0.3s ease;
-            cursor: pointer;
-            text-align: center;
+            background-color: var(--card-color);
+            border-radius: 50%;
+            border: 4px solid var(--border-cute);
+            box-shadow: var(--shadow);
+            display: flex;
+            justify-content: center;
+            align-items: center;
             position: relative;
             overflow: hidden;
+            animation: floating 3s ease-in-out infinite;
         }
 
-        .tarjeta:hover {
-            transform: translateY(-10px);
-            background-color: var(--color-secundario);
-            color: white;
+        /* INSTRUCTIONS FOR YOU: Reemplaza la URL abajo por una de Snoopy si gustas */
+        .character-img {
+            max-width: 80%;
+            max-height: 80%;
+            opacity: 0.9;
         }
 
-        .tarjeta h2 {
-            margin-top: 0;
+        @keyframes floating {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        /* --- HEADER & COUNTER --- */
+        h1 {
+            font-family: 'Grand Hotel', cursive;
+            font-size: 3.5rem;
+            color: var(--text-accent);
+            margin: 15px 0 5px 0;
+            text-align: center;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .subtitle {
+            font-size: 1rem;
+            font-weight: 400;
+            color: #888;
+            margin-bottom: 30px;
+        }
+
+        .counter-container {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .counter-box {
+            background: var(--card-color);
+            padding: 15px 20px;
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+            border: 2px solid var(--border-cute);
+            text-align: center;
+            min-width: 80px;
+        }
+
+        .counter-val {
+            font-size: 2.2rem;
+            font-weight: 600;
+            color: var(--text-accent);
+        }
+
+        .counter-label {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #888;
+        }
+
+        /* --- MEMORY BOX (The improved cards) --- */
+        .memory-box {
+            max-width: 800px;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .memory-title {
+            font-family: 'Grand Hotel', cursive;
+            font-size: 2.5rem;
+            color: var(--text-accent);
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .timeline {
+            position: relative;
+            padding-left: 30px;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 10px;
+            bottom: 10px;
+            width: 4px;
+            background: var(--border-cute);
+            border-radius: 2px;
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 30px;
+            cursor: pointer;
+        }
+
+        .timeline-dot {
+            position: absolute;
+            left: -38px;
+            top: 5px;
+            width: 20px;
+            height: 20px;
+            background: var(--card-color);
+            border: 4px solid var(--text-accent);
+            border-radius: 50%;
+            z-index: 2;
+            transition: all 0.3s ease;
+        }
+
+        .timeline-item:hover .timeline-dot {
+            transform: scale(1.3);
+            background: var(--text-accent);
+        }
+
+        .timeline-content {
+            background: var(--card-color);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s ease;
+            position: relative;
+        }
+
+        .timeline-item:hover .timeline-content {
+            transform: translateX(5px);
+        }
+
+        .timeline-date {
+            font-size: 0.85rem;
+            color: var(--text-accent);
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .timeline-h {
             font-size: 1.2rem;
+            font-weight: 600;
+            margin: 0 0 10px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
-        .contenido-oculto {
-            display: none;
-            margin-top: 15px;
-            font-style: italic;
+        .timeline-text {
+            display: none; /* Hidden by default */
             font-size: 0.95rem;
-            line-height: 1.5;
+            line-height: 1.6;
+            color: #666;
+            margin: 0;
+            font-style: italic;
         }
 
-        .tarjeta.abierta .contenido-oculto {
+        /* When the item is clicked (JavaScript will toggle this) */
+        .timeline-item.active .timeline-text {
             display: block;
-            animation: aparecer 0.5s ease;
+            animation: fadeInDown 0.5s ease;
         }
 
-        .tarjeta.abierta .emoji {
-            display: none;
-        }
-
-        @keyframes aparecer {
-            from { opacity: 0; transform: translateY(10px); }
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-10px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
+        /* --- FOOTER --- */
         footer {
-            margin-top: 50px;
-            font-size: 0.8rem;
-            color: var(--color-principal);
-            font-weight: bold;
+            margin: 60px 0 30px 0;
+            font-family: 'Grand Hotel', cursive;
+            font-size: 2rem;
+            color: var(--text-accent);
+            text-align: center;
+            animation: heartBeat 2s infinite;
+        }
+
+        @keyframes heartBeat {
+            0%, 100% { transform: scale(1); }
+            10% { transform: scale(1.1); }
+            20% { transform: scale(1); }
+        }
+
+        /* Tablet/Mobile refinements */
+        @media (max-width: 600px) {
+            h1 { font-size: 2.8rem; }
+            .counter-box { min-width: 65px; padding: 10px; }
+            .counter-val { font-size: 1.8rem; }
         }
     </style>
 </head>
 <body>
 
-    <h1>Felices 5 Meses, mi amor ❤️</h1>
-    <p>Desde el 30 de octubre de 2025 cada día es especial.</p>
-    <p><i>(Toca cada tarjeta para ver un mensaje)</i></p>
+    <div class="character-spot">
+        <span style="font-size: 80px;">🐶❤️☁️</span> </div>
 
-    <div class="grid-recuerdos">
-        <div class="tarjeta" onclick="abrirTarjeta(this)">
-            <span class="emoji">🎁</span>
-            <h2>Nuestro Inicio</h2>
-            <p class="contenido-oculto">
-                Todo comenzó un 30 de octubre. No sabía que ese día mi vida cambiaría para mejor. ¡Gracias por estos 5 meses!
-            </p>
+    <h1>Felices 5 Meses, mi niña</h1>
+    <div class="subtitle">Desde el mágico 30 de Octubre del 2025</div>
+
+    <div class="counter-container">
+        <div class="counter-box">
+            <div class="counter-val" id="days">00</div>
+            <div class="counter-label">Días</div>
         </div>
-
-        <div class="tarjeta" onclick="abrirTarjeta(this)">
-            <span class="emoji">✨</span>
-            <h2>Lo que más amo</h2>
-            <p class="contenido-oculto">
-                Amo tu sonrisa, tu forma de apoyarme en mis proyectos y cómo haces que cada momento sea único.
-            </p>
+        <div class="counter-box">
+            <div class="counter-val" id="hours">00</div>
+            <div class="counter-label">Horas</div>
         </div>
-
-        <div class="tarjeta" onclick="abrirTarjeta(this)">
-            <span class="emoji">🌙</span>
-            <h2>Mi Promesa</h2>
-            <p class="contenido-oculto">
-                Prometo seguir construyendo cosas bonitas para ti, no solo en código, sino en nuestra vida real.
-            </p>
+        <div class="counter-box">
+            <div class="counter-val" id="minutes">00</div>
+            <div class="counter-label">Min</div>
         </div>
-
-        <div class="tarjeta" onclick="abrirTarjeta(this)">
-            <span class="emoji">🚀</span>
-            <h2>El Futuro</h2>
-            <p class="contenido-oculto">
-                5 meses son solo el inicio. ¡Prepárate porque vamos por muchísimos más! Te amo.
-            </p>
+        <div class="counter-box">
+            <div class="counter-val" id="seconds">00</div>
+            <div class="counter-label">Seg</div>
         </div>
     </div>
 
-    <footer>Hecho con amor para ti — 30 de marzo</footer>
+    <div class="memory-box">
+        <div class="memory-title">Nuestra Caja de Recuerdos</div>
+        <p style="text-align:center; color: #888; font-size: 0.9rem;"><i>(Toca un recuerdo para leer más)</i></p>
+        
+        <div class="timeline">
+            <div class="timeline-item" onclick="toggleMemory(this)">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <div class="timeline-date">30 Octubre 2025</div>
+                    <h3 class="timeline-h">✨ El Comienzo de Todo</h3>
+                    <p class="timeline-text">
+                        Aquel día el mundo se volvió más brillante. No tenía idea de que al decir "sí", estaba empezando la aventura más hermosa de mi vida. Gracias por elegirme.
+                    </p>
+                </div>
+            </div>
+
+            <div class="timeline-item" onclick="toggleMemory(this)">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <div class="timeline-date">Día a Día</div>
+                    <h3 class="timeline-h">😊 Tu Sonrisa Mágica</h3>
+                    <p class="timeline-text">
+                        Amo cómo tu sonrisa ilumina incluso mis días más grises. Eres mi refugio y mi alegría constante en estos 150 días (¡y contando!).
+                    </p>
+                </div>
+            </div>
+
+            <div class="timeline-item" onclick="toggleMemory(this)">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <div class="timeline-date">Aventura</div>
+                    <h3 class="timeline-h">🚀 Nuestros Proyectos</h3>
+                    <p class="timeline-text">
+                        Me encanta cómo nos apoyamos. Ya sea construyendo código, soñando despiertos o simplemente estando juntos, sé que somos el mejor equipo.
+                    </p>
+                </div>
+            </div>
+
+            <div class="timeline-item" onclick="toggleMemory(this)">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <div class="timeline-date">Hoy</div>
+                    <h3 class="timeline-h">💖 Te Amo Más</h3>
+                    <p class="timeline-text">
+                        5 meses son solo el prólogo. Estoy emocionado por cada día que viene, por cada risa que compartiremos y por cada sueño que cumpliremos juntos. Eres todo para mí.
+                    </p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <footer>Te amo, mi preciosa 🐾</footer>
 
     <script>
-        function abrirTarjeta(elemento) {
-            elemento.classList.toggle('abierta');
+        /* --- TIMER LOGIC (Since Oct 30, 2025) --- */
+        const startDate = new Date("October 30, 2025 00:00:00").getTime();
+
+        function updateCounter() {
+            const now = new Date().getTime();
+            const difference = now - startDate;
+
+            // Time calculations for days, hours, minutes and seconds
+            const d = Math.floor(difference / (1000 * 60 * 60 * 24));
+            const h = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const m = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+            const s = Math.floor((difference % (1000 * 60)) / 1000);
+
+            // Update the DOM, adding leading zeros if needed
+            document.getElementById("days").innerText = d < 10 ? '0' + d : d;
+            document.getElementById("hours").innerText = h < 10 ? '0' + h : h;
+            document.getElementById("minutes").innerText = m < 10 ? '0' + m : m;
+            document.getElementById("seconds").innerText = s < 10 ? '0' + s : s;
+        }
+
+        // Run the counter immediately and then every second
+        updateCounter();
+        setInterval(updateCounter, 1000);
+
+        /* --- TIMELINE INTERACTION LOGIC --- */
+        function toggleMemory(element) {
+            // Check if this item is already active
+            const isActive = element.classList.contains('active');
+            
+            // Optionally, you can close other open items here if you want:
+            // document.querySelectorAll('.timeline-item').forEach(item => item.classList.remove('active'));
+
+            if (isActive) {
+                element.classList.remove('active');
+            } else {
+                element.classList.add('active');
+            }
         }
     </script>
 </body>
