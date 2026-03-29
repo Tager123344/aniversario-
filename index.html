@@ -2,28 +2,227 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>Audio Test</title>
+<title>Nuestro Momento 💖</title>
+
+<style>
+body {
+    margin: 0;
+    overflow: hidden;
+    background: radial-gradient(circle, #1a001f, #000);
+    font-family: 'Segoe UI';
+}
+
+#btn {
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 16px 35px;
+    border-radius: 30px;
+    border: none;
+    background: #ff4da6;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    box-shadow: 0 0 25px #ff4da6;
+}
+
+#texto {
+    position: absolute;
+    width: 100%;
+    top: 35%;
+    text-align: center;
+    font-size: 34px;
+    color: white;
+    opacity: 0;
+    transition: 2s;
+    padding: 0 20px;
+}
+
+#carta {
+    position: absolute;
+    width: 80%;
+    max-width: 700px;
+    top: 20%;
+    left: 50%;
+    transform: translateX(-50%);
+    color: white;
+    font-size: 20px;
+    line-height: 1.6;
+    opacity: 0;
+    transition: 3s;
+    text-align: center;
+}
+</style>
 </head>
 
-<body style="background:black; color:white; text-align:center;">
+<body>
 
-<h1>💖 Prueba de música 💖</h1>
+<div id="texto"></div>
+<div id="carta"></div>
+<button id="btn">▶️ Reproducir música</button>
 
-<audio id="audio" src="music.mp3"></audio>
-
-<button onclick="playMusic()" style="padding:20px; font-size:20px;">
-▶️ Reproducir
-</button>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
 <script>
-function playMusic(){
-    let audio = document.getElementById("audio");
-    audio.play().then(()=>{
-        alert("✅ Música funcionando");
-    }).catch(e=>{
-        alert("❌ Error: " + e);
-    });
+
+// ESCENA
+let scene = new THREE.Scene();
+let camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight,0.1,3000);
+camera.position.z = 800;
+
+let renderer = new THREE.WebGLRenderer({alpha:true});
+renderer.setSize(window.innerWidth, window.innerHeight);
+document.body.appendChild(renderer.domElement);
+
+// LUZ
+let light = new THREE.PointLight(0xff99cc, 2, 2000);
+light.position.set(0,200,300);
+scene.add(light);
+
+// PARTÍCULAS
+let geo = new THREE.BufferGeometry();
+let arr = [];
+
+for(let i=0;i<3000;i++){
+    arr.push(
+        (Math.random()-0.5)*1200,
+        Math.random()*1000,
+        (Math.random()-0.5)*1200
+    );
 }
+
+geo.setAttribute('position', new THREE.Float32BufferAttribute(arr,3));
+let mat = new THREE.PointsMaterial({
+    color:0xff99cc,
+    size:3,
+    transparent:true
+});
+let petals = new THREE.Points(geo,mat);
+scene.add(petals);
+
+// CORAZÓN
+let heartGeo = new THREE.SphereGeometry(120,32,32);
+let heartMat = new THREE.MeshStandardMaterial({
+    color:0xff3366,
+    emissive:0xff0044,
+    emissiveIntensity:2
+});
+let heart = new THREE.Mesh(heartGeo,heartMat);
+heart.visible = false;
+scene.add(heart);
+
+// 🎵 AUDIO DESDE TU GITHUB
+let audio = new Audio("https://raw.githubusercontent.com/Tager123344/aniversario-/main/music.mp3");
+audio.loop = true;
+audio.volume = 0.5;
+
+let iniciado = false;
+
+// FRASES
+let frases = [
+    "No fue suerte...",
+    "No fue coincidencia...",
+    "Fue el destino...",
+    "Eligiéndote a ti...",
+    "Entre millones de caminos...",
+    "Y volvería a hacerlo...",
+    "Una y mil veces más..."
+];
+
+let i = 0;
+
+// BOTÓN
+document.getElementById("btn").onclick = ()=>{
+
+    if(!iniciado){
+        audio.play().then(()=>{
+            iniciado = true;
+            document.getElementById("btn").innerHTML = "⏸️ Pausar música";
+            siguiente();
+        }).catch(()=>{
+            alert("Toca otra vez 💖");
+        });
+    } else {
+        if(audio.paused){
+            audio.play();
+            document.getElementById("btn").innerHTML = "⏸️ Pausar música";
+        } else {
+            audio.pause();
+            document.getElementById("btn").innerHTML = "▶️ Reproducir música";
+        }
+    }
+};
+
+// TEXTO
+function siguiente(){
+    if(i>=frases.length){
+        mostrarCarta();
+        return;
+    }
+
+    let t = document.getElementById("texto");
+    t.innerHTML = frases[i];
+    t.style.opacity = 1;
+
+    setTimeout(()=>{
+        t.style.opacity = 0;
+        i++;
+        setTimeout(siguiente,2000);
+    },4000);
+}
+
+// CARTA FINAL
+function mostrarCarta(){
+    heart.visible = true;
+
+    let carta = document.getElementById("carta");
+    carta.innerHTML = `
+    💖 Mi amor 💖 <br><br>
+    Desde que llegaste a mi vida, todo cambió. <br>
+    Le diste color a mis días, sentido a mis sueños <br>
+    y paz a mi corazón. <br><br>
+    
+    No importa el tiempo, no importa la distancia, <br>
+    siempre serás tú. <br><br>
+    
+    ✨ Feliz aniversario ✨ <br>
+    <strong>30/10/2025 ❤️</strong>
+    `;
+    
+    carta.style.opacity = 1;
+}
+
+// ANIMACIÓN
+function animate(){
+    requestAnimationFrame(animate);
+
+    let time = Date.now()*0.001;
+
+    camera.position.x = Math.sin(time*0.3)*50;
+    camera.position.y = Math.sin(time*0.2)*30;
+    camera.lookAt(0,0,0);
+
+    let pos = geo.attributes.position.array;
+    for(let i=0;i<3000;i++){
+        pos[i*3+1] -= 1.2;
+        if(pos[i*3+1] < -300){
+            pos[i*3+1] = 1000;
+        }
+    }
+    geo.attributes.position.needsUpdate = true;
+
+    if(heart.visible){
+        let scale = 1 + Math.sin(time*3)*0.15;
+        heart.scale.set(scale,scale,scale);
+        heart.rotation.y += 0.01;
+    }
+
+    renderer.render(scene,camera);
+}
+
+animate();
+
 </script>
 
 </body>
