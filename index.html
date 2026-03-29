@@ -2,22 +2,36 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>Nuestra Historia 💖</title>
+<title>Nuestro Sueño 💖</title>
 
 <style>
 body {
     margin: 0;
     overflow: hidden;
-    background: black;
-    font-family: Arial;
+    background: radial-gradient(circle, #1a001f, #000);
+    font-family: 'Segoe UI';
+}
+
+#btn {
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 15px 30px;
+    border-radius: 30px;
+    border: none;
+    background: #ff4da6;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
 }
 
 #texto {
     position: absolute;
-    top: 40%;
     width: 100%;
+    top: 40%;
     text-align: center;
-    font-size: 32px;
+    font-size: 30px;
     color: white;
     opacity: 0;
     transition: 2s;
@@ -28,72 +42,67 @@ body {
 <body>
 
 <div id="texto"></div>
+<button id="btn">💖 Entrar al sueño 💖</button>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
 <script>
 
-// escena
 let scene = new THREE.Scene();
-let camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight,0.1,5000);
-camera.position.z = 1000;
+let camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight,0.1,2000);
+camera.position.z = 500;
 
-let renderer = new THREE.WebGLRenderer();
+let renderer = new THREE.WebGLRenderer({alpha:true});
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 
-// estrellas
-let starsGeo = new THREE.BufferGeometry();
+// partículas tipo pétalos
+let geo = new THREE.BufferGeometry();
 let arr = [];
 
-for(let i=0;i<15000;i++){
+for(let i=0;i<2000;i++){
     arr.push(
-        (Math.random()-0.5)*4000,
-        (Math.random()-0.5)*4000,
-        (Math.random()-0.5)*4000
+        (Math.random()-0.5)*1000,
+        Math.random()*800,
+        (Math.random()-0.5)*1000
     );
 }
 
-starsGeo.setAttribute('position', new THREE.Float32BufferAttribute(arr,3));
-let starsMat = new THREE.PointsMaterial({color:0xffffff, size:1});
-let stars = new THREE.Points(starsGeo,starsMat);
-scene.add(stars);
-
-// luz (ella)
-let luzGeo = new THREE.SphereGeometry(20,32,32);
-let luzMat = new THREE.MeshBasicMaterial({color:0xff4da6});
-let luz = new THREE.Mesh(luzGeo,luzMat);
-luz.visible = false;
-scene.add(luz);
+geo.setAttribute('position', new THREE.Float32BufferAttribute(arr,3));
+let mat = new THREE.PointsMaterial({color:0xff99cc, size:3});
+let petals = new THREE.Points(geo,mat);
+scene.add(petals);
 
 // corazón
-let heartGeo = new THREE.SphereGeometry(100,32,32);
+let heartGeo = new THREE.SphereGeometry(80,32,32);
 let heartMat = new THREE.MeshBasicMaterial({color:0xff3366});
 let heart = new THREE.Mesh(heartGeo,heartMat);
 heart.visible = false;
 scene.add(heart);
 
 // audio
-let audio = new Audio("music.mp3");
-audio.play();
+let audio = new Audio("https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3");
 
-// texto
 let frases = [
-    "Antes de ti...",
-    "Todo era vacío...",
-    "Hasta que apareciste tú...",
-    "Y cambiaste mi universo...",
-    "Lo llenaste de luz...",
-    "Y de amor...",
-    "Desde entonces...",
-    "Todo eres tú...",
+    "No fue casualidad...",
+    "Fue destino...",
+    "Fue magia...",
+    "Fuiste tú...",
+    "Y desde entonces...",
+    "Mi vida cambió...",
     "Feliz aniversario 💖",
     "30/10/2025 ❤️"
 ];
 
 let i = 0;
 
-function mostrar(){
+document.getElementById("btn").onclick = ()=>{
+    audio.play();
+    document.getElementById("btn").style.display="none";
+    siguiente();
+};
+
+function siguiente(){
     if(i>=frases.length) return;
 
     let t = document.getElementById("texto");
@@ -103,34 +112,32 @@ function mostrar(){
     setTimeout(()=>{
         t.style.opacity = 0;
         i++;
-        setTimeout(mostrar,2000);
+        setTimeout(siguiente,2000);
     },4000);
 }
 
-setTimeout(mostrar,1000);
-
-// timeline animación
+// animación
 function animate(){
     requestAnimationFrame(animate);
 
     let time = Date.now()*0.001;
 
-    stars.rotation.y += 0.0005;
-
-    // escena progresiva
-    if(i > 2){
-        luz.visible = true;
-        luz.position.x = Math.sin(time)*200;
+    // caída de pétalos
+    let pos = geo.attributes.position.array;
+    for(let i=0;i<2000;i++){
+        pos[i*3+1] -= 1.5;
+        if(pos[i*3+1] < -200){
+            pos[i*3+1] = 800;
+        }
     }
+    geo.attributes.position.needsUpdate = true;
 
+    // corazón aparece después
     if(i > 4){
         heart.visible = true;
-        heart.scale.x += 0.01;
-        heart.scale.y += 0.01;
-    }
-
-    if(i > 6){
-        camera.position.z -= 1; // zoom emocional
+        heart.scale.x = 1 + Math.sin(time*3)*0.2;
+        heart.scale.y = heart.scale.x;
+        heart.rotation.y += 0.02;
     }
 
     renderer.render(scene,camera);
