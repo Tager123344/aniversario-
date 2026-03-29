@@ -1,207 +1,143 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <title>Aniversario - Natasha</title>
-    <style>
-        /* Estética de Terciopelo y Lujo */
-        body { 
-            margin: 0; 
-            overflow: hidden; 
-            background: radial-gradient(circle, #fff0f5 0%, #fbc2eb 100%); 
-            font-family: 'Georgia', serif;
-        }
+<meta charset="UTF-8">
+<title>Nuestro Aniversario 💖</title>
+<style>
+body {
+    margin: 0;
+    overflow: hidden;
+    background: black;
+    font-family: Arial;
+}
 
-        /* Botón Dorado de Apertura */
-        #btnAbrir {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            padding: 20px 60px;
-            background: white;
-            border: 2px solid #b76e79;
-            color: #b76e79;
-            font-size: 22px;
-            font-weight: bold;
-            cursor: pointer;
-            border-radius: 50px;
-            box-shadow: 0 10px 30px rgba(183, 110, 121, 0.3);
-            z-index: 100;
-            transition: 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
+#startBtn {
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 15px 30px;
+    border: none;
+    border-radius: 30px;
+    background: #ff4da6;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    box-shadow: 0 0 20px #ff4da6;
+}
 
-        #btnAbrir:hover {
-            background: #b76e79;
-            color: white;
-            box-shadow: 0 15px 45px rgba(183, 110, 121, 0.5);
-            transform: translate(-50%, -55%) scale(1.05);
-        }
-
-        /* Frases que aparecen suavemente */
-        #contenedorFrases {
-            position: absolute;
-            bottom: 15%;
-            width: 100%;
-            text-align: center;
-            z-index: 10;
-            pointer-events: none;
-        }
-
-        .frase {
-            font-size: clamp(24px, 5vw, 40px);
-            color: #b76e79;
-            font-weight: bold;
-            text-shadow: 0 0 15px rgba(255, 255, 255, 0.9);
-            opacity: 0;
-            transition: opacity 2s ease;
-            position: absolute;
-            width: 100%;
-            left: 0;
-        }
-    </style>
+#mensaje {
+    position: absolute;
+    width: 100%;
+    top: 40%;
+    text-align: center;
+    font-size: 28px;
+    color: white;
+    opacity: 0;
+    transition: 2s;
+}
+</style>
 </head>
 <body>
 
-<button id="btnAbrir">Abrir Nuestro Regalo 💖</button>
-
-<div id="contenedorFrases">
-    <div class="frase" id="f1">Tu sonrisa es mi lugar favorito</div>
-    <div class="frase" id="f2">Gracias por estos días a mi lado</div>
-    <div class="frase" id="f3">Cada nota de esta música es para ti</div>
-    <div class="frase" id="f4">Te amo más de lo que imaginas</div>
-    <div class="frase" id="f5">Feliz Aniversario, Natasha ❤️</div>
-</div>
+<button id="startBtn">💖 Iniciar Nuestro Viaje 💖</button>
+<div id="mensaje"></div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
 <script>
-    let escena, camara, render, tapaPivote;
-    let corazones = [];
-    let audio = new Audio("music.mp3");
-    let clickSound = new Audio("click.mp3");
-    let iniciado = false;
+let escena = new THREE.Scene();
+let camara = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 2000);
+camara.position.z = 500;
 
-    // Configuración inicial del 3D
-    function init() {
-        escena = new THREE.Scene();
-        camara = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        camara.position.set(0, 45, 140);
+let render = new THREE.WebGLRenderer();
+render.setSize(window.innerWidth, window.innerHeight);
+document.body.appendChild(render.domElement);
 
-        render = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-        render.setSize(window.innerWidth, window.innerHeight);
-        document.body.appendChild(render.domElement);
+// estrellas
+let estrellasGeo = new THREE.BufferGeometry();
+let posiciones = [];
 
-        // Iluminación suave
-        const luzPuntual = new THREE.PointLight(0xffffff, 1.2, 500);
-        luzPuntual.position.set(50, 100, 80);
-        escena.add(luzPuntual);
-        escena.add(new THREE.AmbientLight(0xfff0f5, 0.7));
+for(let i=0;i<10000;i++){
+    posiciones.push(
+        (Math.random()-0.5)*2000,
+        (Math.random()-0.5)*2000,
+        (Math.random()-0.5)*2000
+    );
+}
 
-        // Materiales Lujosos
-        const matOroRosa = new THREE.MeshStandardMaterial({ 
-            color: 0xb76e79, metalness: 0.9, roughness: 0.1 
-        });
-        const matNacar = new THREE.MeshStandardMaterial({ 
-            color: 0xfffafa, roughness: 0.2, emissive: 0xfff0f5, emissiveIntensity: 0.1
-        });
+estrellasGeo.setAttribute('position', new THREE.Float32BufferAttribute(posiciones,3));
+let estrellasMat = new THREE.PointsMaterial({color:0xffffff});
+let estrellas = new THREE.Points(estrellasGeo, estrellasMat);
+escena.add(estrellas);
 
-        // 1. El Alhajero
-        // Base de Nácar
-        const base = new THREE.Mesh(new THREE.CylinderGeometry(55, 60, 25, 32), matNacar);
-        escena.add(base);
+// partículas corazón
+let particlesGeo = new THREE.BufferGeometry();
+let pPos = [];
 
-        // Tapa con Pivote
-        tapaPivote = new THREE.Group();
-        tapaPivote.position.set(0, 12, -55); 
-        const tapa = new THREE.Mesh(new THREE.CylinderGeometry(60, 60, 6, 32), matOroRosa);
-        tapa.position.set(0, 3, 55);
-        tapaPivote.add(tapa);
-        escena.add(tapaPivote);
+for(let i=0;i<2000;i++){
+    let t = Math.random()*Math.PI*2;
+    let x = 16*Math.pow(Math.sin(t),3);
+    let y = 13*Math.cos(t)-5*Math.cos(2*t)-2*Math.cos(3*t)-Math.cos(4*t);
 
-        // 2. Corazones Grabados (Geometría personalizada)
-        const forma = new THREE.Shape();
-        forma.moveTo(0, 0);
-        forma.bezierCurveTo(0, 0, -5, 10, 0, 18);
-        forma.bezierCurveTo(5, 25, 20, 15, 20, 15);
-        forma.bezierCurveTo(20, 15, 35, 25, 40, 18);
-        forma.bezierCurveTo(45, 10, 40, 0, 40, 0);
-        forma.bezierCurveTo(40, 0, 40, -15, 20, -25);
-        forma.bezierCurveTo(0, -15, 0, 0, 0, 0);
+    pPos.push(x*10, y*10, 0);
+}
 
-        const geoCorazon = new THREE.ExtrudeGeometry(forma, { depth: 2, bevelEnabled: true, bevelSize: 1 });
-        
-        for(let i=0; i<5; i++) {
-            let corazon = new THREE.Mesh(geoCorazon, matOroRosa);
-            corazon.scale.set(0.7, 0.7, 0.7);
-            corazon.rotation.x = Math.PI;
-            corazon.position.set((i - 2) * 35, 15, (Math.random() - 0.5) * 15);
-            escena.add(corazon);
-            corazones.push(corazon);
-        }
+particlesGeo.setAttribute('position', new THREE.Float32BufferAttribute(pPos,3));
+let particlesMat = new THREE.PointsMaterial({color:0xff3366, size:2});
+let heart = new THREE.Points(particlesGeo, particlesMat);
+heart.scale.set(0.1,0.1,0.1);
+escena.add(heart);
 
-        animate();
+let audio = new Audio("music.mp3");
+
+let mensajes = [
+    "Todo comenzó contigo...",
+    "30/10/2025 💖",
+    "Desde ese día mi mundo cambió...",
+    "Eres mi lugar favorito...",
+    "Y siempre lo serás...",
+    "Feliz aniversario mi amor ❤️"
+];
+
+let i = 0;
+
+document.getElementById("startBtn").onclick = ()=>{
+    audio.play();
+    document.getElementById("startBtn").style.display="none";
+    siguienteMensaje();
+};
+
+function siguienteMensaje(){
+    if(i>=mensajes.length) return;
+    let m = document.getElementById("mensaje");
+    m.innerHTML = mensajes[i];
+    m.style.opacity = 1;
+
+    setTimeout(()=>{
+        m.style.opacity = 0;
+        i++;
+        setTimeout(siguienteMensaje,2000);
+    },4000);
+}
+
+// animación
+function animar(){
+    requestAnimationFrame(animar);
+
+    estrellas.rotation.y += 0.0005;
+
+    if(heart.scale.x < 4){
+        heart.scale.x += 0.01;
+        heart.scale.y += 0.01;
     }
 
-    // Acción al abrir
-    function comenzar() {
-        if(iniciado) return;
-        iniciado = true;
+    heart.rotation.y += 0.01;
 
-        clickSound.play().catch(() => {});
-        audio.play().catch(() => alert("Por favor, asegúrate de tener music.mp3 en la carpeta"));
+    render.render(escena, camara);
+}
 
-        document.getElementById("btnAbrir").style.display = "none";
-        
-        // Ciclo de frases durante los 4 minutos
-        mostrarFrases();
-    }
-
-    function mostrarFrases() {
-        const ids = ['f1', 'f2', 'f3', 'f4', 'f5'];
-        let delay = 3000;
-        ids.forEach((id, index) => {
-            setTimeout(() => {
-                // Ocultar la anterior
-                if(index > 0) document.getElementById(ids[index-1]).style.opacity = "0";
-                // Mostrar la actual
-                document.getElementById(id).style.opacity = "1";
-            }, delay);
-            delay += 6000; // Cada frase dura 6 segundos
-        });
-    }
-
-    function animate() {
-        requestAnimationFrame(animate);
-        let t = Date.now() * 0.002;
-
-        if (iniciado) {
-            // Abrir tapa suavemente
-            if (tapaPivote.rotation.x > -Math.PI * 0.75) {
-                tapaPivote.rotation.x -= 0.015;
-            }
-
-            // Corazones flotando con la música
-            corazones.forEach((c, i) => {
-                c.position.y = 15 + Math.sin(t + i) * 8;
-                c.rotation.y += 0.01;
-                c.rotation.z = Math.sin(t * 0.5) * 0.1;
-            });
-        }
-
-        render.render(escena, camara);
-    }
-
-    document.getElementById("btnAbrir").addEventListener("click", comenzar);
-    window.onload = init;
-
-    // Ajuste de pantalla
-    window.addEventListener('resize', () => {
-        camara.aspect = window.innerWidth / window.innerHeight;
-        camara.updateProjectionMatrix();
-        render.setSize(window.innerWidth, window.innerHeight);
-    });
+animar();
 </script>
-
 </body>
 </html>
