@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>Nuestro Sueño 💖</title>
+<title>Nuestro Momento 💖</title>
 
 <style>
 body {
@@ -17,24 +17,41 @@ body {
     bottom: 40px;
     left: 50%;
     transform: translateX(-50%);
-    padding: 15px 30px;
+    padding: 16px 35px;
     border-radius: 30px;
     border: none;
     background: #ff4da6;
     color: white;
     font-size: 20px;
     cursor: pointer;
+    box-shadow: 0 0 25px #ff4da6;
 }
 
 #texto {
     position: absolute;
     width: 100%;
-    top: 40%;
+    top: 35%;
     text-align: center;
-    font-size: 30px;
+    font-size: 34px;
     color: white;
     opacity: 0;
     transition: 2s;
+    padding: 0 20px;
+}
+
+#carta {
+    position: absolute;
+    width: 80%;
+    max-width: 700px;
+    top: 20%;
+    left: 50%;
+    transform: translateX(-50%);
+    color: white;
+    font-size: 20px;
+    line-height: 1.6;
+    opacity: 0;
+    transition: 3s;
+    text-align: center;
 }
 </style>
 </head>
@@ -42,60 +59,76 @@ body {
 <body>
 
 <div id="texto"></div>
-<button id="btn">💖 Entrar al sueño 💖</button>
+<div id="carta"></div>
+<button id="btn">💖 Comenzar 💖</button>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
 <script>
 
+// escena
 let scene = new THREE.Scene();
-let camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight,0.1,2000);
-camera.position.z = 500;
+let camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight,0.1,3000);
+camera.position.z = 800;
 
 let renderer = new THREE.WebGLRenderer({alpha:true});
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 
-// partículas tipo pétalos
+// luz ambiental
+let light = new THREE.PointLight(0xff99cc, 2, 2000);
+light.position.set(0,200,300);
+scene.add(light);
+
+// partículas (pétalos + luz)
 let geo = new THREE.BufferGeometry();
 let arr = [];
 
-for(let i=0;i<2000;i++){
+for(let i=0;i<3000;i++){
     arr.push(
-        (Math.random()-0.5)*1000,
-        Math.random()*800,
-        (Math.random()-0.5)*1000
+        (Math.random()-0.5)*1200,
+        Math.random()*1000,
+        (Math.random()-0.5)*1200
     );
 }
 
 geo.setAttribute('position', new THREE.Float32BufferAttribute(arr,3));
-let mat = new THREE.PointsMaterial({color:0xff99cc, size:3});
+let mat = new THREE.PointsMaterial({
+    color:0xff99cc,
+    size:3,
+    transparent:true
+});
 let petals = new THREE.Points(geo,mat);
 scene.add(petals);
 
 // corazón
-let heartGeo = new THREE.SphereGeometry(80,32,32);
-let heartMat = new THREE.MeshBasicMaterial({color:0xff3366});
+let heartGeo = new THREE.SphereGeometry(120,32,32);
+let heartMat = new THREE.MeshStandardMaterial({
+    color:0xff3366,
+    emissive:0xff0044,
+    emissiveIntensity:2
+});
 let heart = new THREE.Mesh(heartGeo,heartMat);
 heart.visible = false;
 scene.add(heart);
 
-// audio
-let audio = new Audio("https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3");
+// audio (TU ARCHIVO)
+let audio = new Audio("music.mp3");
 
+// frases
 let frases = [
-    "No fue casualidad...",
-    "Fue destino...",
-    "Fue magia...",
-    "Fuiste tú...",
-    "Y desde entonces...",
-    "Mi vida cambió...",
-    "Feliz aniversario 💖",
-    "30/10/2025 ❤️"
+    "No fue suerte...",
+    "No fue coincidencia...",
+    "Fue el destino...",
+    "Eligiéndote a ti...",
+    "Entre millones de caminos...",
+    "Y volvería a hacerlo...",
+    "Una y mil veces más..."
 ];
 
 let i = 0;
 
+// iniciar
 document.getElementById("btn").onclick = ()=>{
     audio.play();
     document.getElementById("btn").style.display="none";
@@ -103,7 +136,10 @@ document.getElementById("btn").onclick = ()=>{
 };
 
 function siguiente(){
-    if(i>=frases.length) return;
+    if(i>=frases.length){
+        mostrarCarta();
+        return;
+    }
 
     let t = document.getElementById("texto");
     t.innerHTML = frases[i];
@@ -116,28 +152,53 @@ function siguiente(){
     },4000);
 }
 
+// carta final
+function mostrarCarta(){
+    heart.visible = true;
+
+    let carta = document.getElementById("carta");
+    carta.innerHTML = `
+    💖 Mi amor 💖 <br><br>
+    Desde que llegaste a mi vida, todo cambió. <br>
+    Le diste color a mis días, sentido a mis sueños <br>
+    y paz a mi corazón. <br><br>
+    
+    No importa el tiempo, no importa la distancia, <br>
+    siempre serás tú. <br><br>
+    
+    ✨ Feliz aniversario ✨ <br>
+    <strong>30/10/2025 ❤️</strong>
+    `;
+    
+    carta.style.opacity = 1;
+}
+
 // animación
 function animate(){
     requestAnimationFrame(animate);
 
     let time = Date.now()*0.001;
 
-    // caída de pétalos
+    // cámara cinematográfica (movimiento suave)
+    camera.position.x = Math.sin(time*0.3)*50;
+    camera.position.y = Math.sin(time*0.2)*30;
+    camera.lookAt(0,0,0);
+
+    // caída de partículas
     let pos = geo.attributes.position.array;
-    for(let i=0;i<2000;i++){
-        pos[i*3+1] -= 1.5;
-        if(pos[i*3+1] < -200){
-            pos[i*3+1] = 800;
+    for(let i=0;i<3000;i++){
+        pos[i*3+1] -= 1.2;
+        if(pos[i*3+1] < -300){
+            pos[i*3+1] = 1000;
         }
     }
     geo.attributes.position.needsUpdate = true;
 
-    // corazón aparece después
-    if(i > 4){
-        heart.visible = true;
-        heart.scale.x = 1 + Math.sin(time*3)*0.2;
-        heart.scale.y = heart.scale.x;
-        heart.rotation.y += 0.02;
+    // corazón animación
+    if(heart.visible){
+        let scale = 1 + Math.sin(time*3)*0.15;
+        heart.scale.set(scale,scale,scale);
+        heart.rotation.y += 0.01;
     }
 
     renderer.render(scene,camera);
