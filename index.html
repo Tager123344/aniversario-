@@ -60,13 +60,13 @@ body {
 
 <div id="texto"></div>
 <div id="carta"></div>
-<button id="btn">💖 Comenzar 💖</button>
+<button id="btn">▶️ Reproducir música</button>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
 <script>
 
-// escena
+// ESCENA
 let scene = new THREE.Scene();
 let camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight,0.1,3000);
 camera.position.z = 800;
@@ -75,12 +75,12 @@ let renderer = new THREE.WebGLRenderer({alpha:true});
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 
-// luz ambiental
+// LUZ
 let light = new THREE.PointLight(0xff99cc, 2, 2000);
 light.position.set(0,200,300);
 scene.add(light);
 
-// partículas (pétalos + luz)
+// PARTÍCULAS
 let geo = new THREE.BufferGeometry();
 let arr = [];
 
@@ -101,7 +101,7 @@ let mat = new THREE.PointsMaterial({
 let petals = new THREE.Points(geo,mat);
 scene.add(petals);
 
-// corazón
+// CORAZÓN
 let heartGeo = new THREE.SphereGeometry(120,32,32);
 let heartMat = new THREE.MeshStandardMaterial({
     color:0xff3366,
@@ -112,10 +112,14 @@ let heart = new THREE.Mesh(heartGeo,heartMat);
 heart.visible = false;
 scene.add(heart);
 
-// audio (TU ARCHIVO)
-let audio = new Audio("music.mp3");
+// AUDIO (TU ARCHIVO)
+let audio = new Audio("./music.mp3");
+audio.loop = true;
+audio.volume = 0.5;
 
-// frases
+let iniciado = false;
+
+// FRASES
 let frases = [
     "No fue suerte...",
     "No fue coincidencia...",
@@ -128,13 +132,29 @@ let frases = [
 
 let i = 0;
 
-// iniciar
+// BOTÓN
 document.getElementById("btn").onclick = ()=>{
-    audio.play();
-    document.getElementById("btn").style.display="none";
-    siguiente();
+
+    if(!iniciado){
+        audio.play().then(()=>{
+            iniciado = true;
+            document.getElementById("btn").innerHTML = "⏸️ Pausar música";
+            siguiente();
+        }).catch(()=>{
+            alert("Toca otra vez 💖");
+        });
+    } else {
+        if(audio.paused){
+            audio.play();
+            document.getElementById("btn").innerHTML = "⏸️ Pausar música";
+        } else {
+            audio.pause();
+            document.getElementById("btn").innerHTML = "▶️ Reproducir música";
+        }
+    }
 };
 
+// TEXTO
 function siguiente(){
     if(i>=frases.length){
         mostrarCarta();
@@ -152,7 +172,7 @@ function siguiente(){
     },4000);
 }
 
-// carta final
+// CARTA FINAL
 function mostrarCarta(){
     heart.visible = true;
 
@@ -173,18 +193,18 @@ function mostrarCarta(){
     carta.style.opacity = 1;
 }
 
-// animación
+// ANIMACIÓN
 function animate(){
     requestAnimationFrame(animate);
 
     let time = Date.now()*0.001;
 
-    // cámara cinematográfica (movimiento suave)
+    // cámara cinematográfica
     camera.position.x = Math.sin(time*0.3)*50;
     camera.position.y = Math.sin(time*0.2)*30;
     camera.lookAt(0,0,0);
 
-    // caída de partículas
+    // caída partículas
     let pos = geo.attributes.position.array;
     for(let i=0;i<3000;i++){
         pos[i*3+1] -= 1.2;
@@ -194,7 +214,7 @@ function animate(){
     }
     geo.attributes.position.needsUpdate = true;
 
-    // corazón animación
+    // corazón
     if(heart.visible){
         let scale = 1 + Math.sin(time*3)*0.15;
         heart.scale.set(scale,scale,scale);
@@ -206,6 +226,14 @@ function animate(){
 
 animate();
 
+// RESPONSIVE
+window.addEventListener('resize', ()=>{
+    camera.aspect = window.innerWidth/window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+});
+
 </script>
+
 </body>
 </html>
