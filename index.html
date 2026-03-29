@@ -2,142 +2,136 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>Nuestro Aniversario 💖</title>
+<title>El Universo Sabe 💖</title>
+
 <style>
 body {
     margin: 0;
-    overflow: hidden;
     background: black;
+    overflow: hidden;
     font-family: Arial;
+    color: white;
 }
 
-#startBtn {
+#btn {
     position: absolute;
-    bottom: 40px;
+    bottom: 50px;
     left: 50%;
     transform: translateX(-50%);
     padding: 15px 30px;
-    border: none;
     border-radius: 30px;
-    background: #ff4da6;
+    border: none;
+    background: #ff3d8b;
     color: white;
     font-size: 20px;
     cursor: pointer;
-    box-shadow: 0 0 20px #ff4da6;
 }
 
-#mensaje {
+#texto {
     position: absolute;
-    width: 100%;
     top: 40%;
+    width: 100%;
     text-align: center;
-    font-size: 28px;
-    color: white;
+    font-size: 30px;
     opacity: 0;
-    transition: 2s;
+    transition: 1.5s;
 }
 </style>
 </head>
+
 <body>
 
-<button id="startBtn">💖 Iniciar Nuestro Viaje 💖</button>
-<div id="mensaje"></div>
+<div id="texto"></div>
+<button id="btn">✨ Pregúntale al universo ✨</button>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
 <script>
+
 let escena = new THREE.Scene();
-let camara = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 2000);
-camara.position.z = 500;
+let camara = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight,0.1,2000);
+camara.position.z = 600;
 
 let render = new THREE.WebGLRenderer();
 render.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(render.domElement);
 
 // estrellas
-let estrellasGeo = new THREE.BufferGeometry();
-let posiciones = [];
+let geo = new THREE.BufferGeometry();
+let arr = [];
 
-for(let i=0;i<10000;i++){
-    posiciones.push(
+for(let i=0;i<8000;i++){
+    arr.push(
         (Math.random()-0.5)*2000,
         (Math.random()-0.5)*2000,
         (Math.random()-0.5)*2000
     );
 }
 
-estrellasGeo.setAttribute('position', new THREE.Float32BufferAttribute(posiciones,3));
-let estrellasMat = new THREE.PointsMaterial({color:0xffffff});
-let estrellas = new THREE.Points(estrellasGeo, estrellasMat);
+geo.setAttribute('position', new THREE.Float32BufferAttribute(arr,3));
+let mat = new THREE.PointsMaterial({color:0xffffff});
+let estrellas = new THREE.Points(geo,mat);
 escena.add(estrellas);
 
-// partículas corazón
-let particlesGeo = new THREE.BufferGeometry();
-let pPos = [];
-
-for(let i=0;i<2000;i++){
-    let t = Math.random()*Math.PI*2;
-    let x = 16*Math.pow(Math.sin(t),3);
-    let y = 13*Math.cos(t)-5*Math.cos(2*t)-2*Math.cos(3*t)-Math.cos(4*t);
-
-    pPos.push(x*10, y*10, 0);
-}
-
-particlesGeo.setAttribute('position', new THREE.Float32BufferAttribute(pPos,3));
-let particlesMat = new THREE.PointsMaterial({color:0xff3366, size:2});
-let heart = new THREE.Points(particlesGeo, particlesMat);
-heart.scale.set(0.1,0.1,0.1);
-escena.add(heart);
-
+// audio
 let audio = new Audio("music.mp3");
 
-let mensajes = [
-    "Todo comenzó contigo...",
-    "30/10/2025 💖",
-    "Desde ese día mi mundo cambió...",
-    "Eres mi lugar favorito...",
-    "Y siempre lo serás...",
-    "Feliz aniversario mi amor ❤️"
+let secuencia = [
+    "¿Quién es lo más importante en mi vida?",
+    "...",
+    "Natasha 💖",
+    "¿Quién cambió mi mundo?",
+    "...",
+    "Tú ✨",
+    "¿A quién amo con todo mi corazón?",
+    "...",
+    "A ti ❤️",
+    "Feliz aniversario mi amor 💕"
 ];
 
 let i = 0;
 
-document.getElementById("startBtn").onclick = ()=>{
+document.getElementById("btn").onclick = ()=>{
     audio.play();
-    document.getElementById("startBtn").style.display="none";
-    siguienteMensaje();
+    document.getElementById("btn").style.display = "none";
+    siguiente();
 };
 
-function siguienteMensaje(){
-    if(i>=mensajes.length) return;
-    let m = document.getElementById("mensaje");
-    m.innerHTML = mensajes[i];
-    m.style.opacity = 1;
+function siguiente(){
+    if(i >= secuencia.length) return;
+
+    let t = document.getElementById("texto");
+    t.innerHTML = secuencia[i];
+    t.style.opacity = 1;
 
     setTimeout(()=>{
-        m.style.opacity = 0;
+        t.style.opacity = 0;
         i++;
-        setTimeout(siguienteMensaje,2000);
-    },4000);
+        setTimeout(siguiente,1500);
+    },3000);
+}
+
+// explosión final
+function explosion(){
+    estrellas.material.color.setHex(0xff4da6);
+    estrellas.scale.set(2,2,2);
 }
 
 // animación
 function animar(){
     requestAnimationFrame(animar);
 
-    estrellas.rotation.y += 0.0005;
+    estrellas.rotation.y += 0.001;
 
-    if(heart.scale.x < 4){
-        heart.scale.x += 0.01;
-        heart.scale.y += 0.01;
+    if(i >= secuencia.length){
+        explosion();
     }
 
-    heart.rotation.y += 0.01;
-
-    render.render(escena, camara);
+    render.render(escena,camara);
 }
 
 animar();
+
 </script>
 </body>
 </html>
