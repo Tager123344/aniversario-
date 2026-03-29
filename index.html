@@ -5,35 +5,28 @@
 <title>Flores Amarillas</title>
 
 <style>
-:root{
-    --bg: #e9dfd4;
-    --trunk: #7a4b2a;
-    --flower: #ffd54f;
-}
-
 body{
     margin:0;
-    height:100vh;
+    background:#111;
     display:flex;
     justify-content:center;
     align-items:center;
-    background:#111;
+    height:100vh;
 }
 
-/* tarjeta */
 .card{
     width:320px;
-    height:380px;
-    background:var(--bg);
+    height:420px;
+    background:#e9dfd4;
     border-radius:20px;
     position:relative;
     overflow:hidden;
 }
 
 /* suelo */
-.line{
+.ground{
     position:absolute;
-    bottom:40px;
+    bottom:50px;
     width:100%;
     height:2px;
     background:#222;
@@ -42,111 +35,121 @@ body{
 /* tronco */
 .trunk{
     position:absolute;
-    bottom:40px;
+    bottom:50px;
     left:50%;
     transform:translateX(-50%);
-    width:18px;
-    height:140px;
-    background:var(--trunk);
-    border-radius:5px;
+    width:16px;
+    height:150px;
+    background:#7a4b2a;
+    border-radius:6px;
 }
 
-/* ramas */
-.branch{
-    position:absolute;
-    width:90px;
-    height:6px;
-    background:var(--trunk);
-    top:30px;
-    transform-origin:left center;
-}
-
-.branch.left{
-    transform:rotate(-35deg);
-    left:-20px;
-}
-
-.branch.right{
-    transform:rotate(35deg);
-    left:-10px;
-}
-
-/* flores (muchas y dispersas) */
-.flower{
-    position:absolute;
-    width:8px;
-    height:8px;
-    background:var(--flower);
-    border-radius:50%;
-    box-shadow:0 0 6px #ffeb3b;
-    animation:pop 2.5s infinite ease-in-out;
-}
-
-/* distribución tipo nube (clave para que se vea igual) */
-.f1{ top:-80px; left:20px;}
-.f2{ top:-100px; left:50px;}
-.f3{ top:-120px; left:80px;}
-.f4{ top:-90px; left:120px;}
-.f5{ top:-60px; left:140px;}
-.f6{ top:-30px; left:100px;}
-.f7{ top:-50px; left:60px;}
-.f8{ top:-20px; left:30px;}
-.f9{ top:-140px; left:100px;}
-.f10{ top:-110px; left:10px;}
-.f11{ top:-130px; left:140px;}
-.f12{ top:-70px; left:80px;}
-
-@keyframes pop{
-    0%,100%{ transform:scale(1); opacity:.8;}
-    50%{ transform:scale(1.6); opacity:1;}
-}
-
-/* texto superior */
+/* texto */
 .title{
     position:absolute;
     top:15px;
     width:100%;
     text-align:center;
-    font-size:22px;
-    letter-spacing:2px;
     font-family:monospace;
+    letter-spacing:3px;
     color:#333;
 }
-</style>
 
+/* flores */
+.flower{
+    position:absolute;
+    width:6px;
+    height:6px;
+    background:#ffd54f;
+    border-radius:50%;
+    box-shadow:0 0 8px #ffeb3b;
+    opacity:0;
+    transform:scale(0);
+    animation:grow 2s forwards;
+}
+
+@keyframes grow{
+    to{
+        opacity:1;
+        transform:scale(1.4);
+    }
+}
+
+/* brillo continuo */
+.flower::after{
+    content:"";
+    position:absolute;
+    width:100%;
+    height:100%;
+    border-radius:50%;
+    box-shadow:0 0 10px yellow;
+    animation:pulse 2s infinite;
+}
+
+@keyframes pulse{
+    0%,100%{opacity:.5;}
+    50%{opacity:1;}
+}
+</style>
 </head>
 
 <body>
 
-<div class="card">
-
-    <div class="title">ALEX DEV</div>
-
-    <div class="trunk">
-
-        <div class="branch left">
-            <div class="flower f1"></div>
-            <div class="flower f2"></div>
-            <div class="flower f3"></div>
-            <div class="flower f4"></div>
-            <div class="flower f5"></div>
-            <div class="flower f6"></div>
-        </div>
-
-        <div class="branch right">
-            <div class="flower f7"></div>
-            <div class="flower f8"></div>
-            <div class="flower f9"></div>
-            <div class="flower f10"></div>
-            <div class="flower f11"></div>
-            <div class="flower f12"></div>
-        </div>
-
-    </div>
-
-    <div class="line"></div>
-
+<div class="card" id="scene">
+    <div class="title">TE AMO</div>
+    <div class="trunk"></div>
+    <div class="ground"></div>
 </div>
+
+<script>
+const scene = document.getElementById("scene");
+
+/* función para crear flores */
+function createFlower(x, y, delay){
+    const f = document.createElement("div");
+    f.className = "flower";
+    f.style.left = x + "px";
+    f.style.top = y + "px";
+    f.style.animationDelay = delay + "s";
+    scene.appendChild(f);
+}
+
+/* generar forma tipo árbol */
+function generateTree(){
+
+    const centerX = 160;
+    const baseY = 220;
+
+    let count = 0;
+
+    for(let i=0;i<120;i++){
+
+        // forma tipo copa (semicírculo irregular)
+        let angle = Math.random() * Math.PI;
+        let radius = 20 + Math.random()*100;
+
+        let x = centerX + Math.cos(angle) * radius;
+        let y = baseY - Math.sin(angle) * radius;
+
+        // ruido para hacerlo orgánico
+        x += (Math.random() - 0.5) * 30;
+        y += (Math.random() - 0.5) * 30;
+
+        createFlower(x, y, count * 0.02);
+        count++;
+    }
+
+    /* algunas flores cayendo (extra realismo) */
+    for(let i=0;i<20;i++){
+        let x = centerX + (Math.random()-0.5)*200;
+        let y = baseY + Math.random()*100;
+
+        createFlower(x, y, 2 + i*0.05);
+    }
+}
+
+generateTree();
+</script>
 
 </body>
 </html>
