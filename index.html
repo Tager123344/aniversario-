@@ -2,228 +2,147 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>Nuestro Momento 💖</title>
-
+<title>Flores Amarillas</title>
 <style>
-body {
-    margin: 0;
-    overflow: hidden;
-    background: radial-gradient(circle, #1a001f, #000);
-    font-family: 'Segoe UI';
-}
+    body {
+        margin: 0;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: #111;
+        font-family: "Arial", sans-serif;
+    }
 
-#btn {
-    position: absolute;
-    bottom: 40px;
-    left: 50%;
-    transform: translateX(-50%);
-    padding: 16px 35px;
-    border-radius: 30px;
-    border: none;
-    background: #ff4da6;
-    color: white;
-    font-size: 20px;
-    cursor: pointer;
-    box-shadow: 0 0 25px #ff4da6;
-}
+    .scene {
+        width: 350px;
+        height: 400px;
+        background: #e8dfd5;
+        border-radius: 20px;
+        position: relative;
+        overflow: hidden;
+    }
 
-#texto {
-    position: absolute;
-    width: 100%;
-    top: 35%;
-    text-align: center;
-    font-size: 34px;
-    color: white;
-    opacity: 0;
-    transition: 2s;
-    padding: 0 20px;
-}
+    /* suelo */
+    .ground {
+        position: absolute;
+        bottom: 40px;
+        width: 100%;
+        height: 2px;
+        background: #333;
+    }
 
-#carta {
-    position: absolute;
-    width: 80%;
-    max-width: 700px;
-    top: 20%;
-    left: 50%;
-    transform: translateX(-50%);
-    color: white;
-    font-size: 20px;
-    line-height: 1.6;
-    opacity: 0;
-    transition: 3s;
-    text-align: center;
-}
+    /* tronco */
+    .trunk {
+        position: absolute;
+        bottom: 40px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 20px;
+        height: 120px;
+        background: #8b5a2b;
+        border-radius: 5px;
+    }
+
+    /* ramas */
+    .branch {
+        position: absolute;
+        width: 80px;
+        height: 6px;
+        background: #8b5a2b;
+        top: -20px;
+        left: -30px;
+        transform-origin: left center;
+    }
+
+    .branch.left {
+        transform: rotate(-30deg);
+    }
+
+    .branch.right {
+        transform: rotate(30deg);
+        left: -20px;
+    }
+
+    /* flores */
+    .flower {
+        position: absolute;
+        width: 10px;
+        height: 10px;
+        background: yellow;
+        border-radius: 50%;
+        box-shadow: 0 0 8px yellow;
+        animation: bloom 3s infinite ease-in-out;
+    }
+
+    /* distribución random de flores */
+    .flowers {
+        position: absolute;
+        top: -120px;
+        left: -80px;
+        width: 200px;
+        height: 200px;
+    }
+
+    .flower:nth-child(1) { top: 20px; left: 50px; }
+    .flower:nth-child(2) { top: 40px; left: 100px; }
+    .flower:nth-child(3) { top: 80px; left: 70px; }
+    .flower:nth-child(4) { top: 60px; left: 30px; }
+    .flower:nth-child(5) { top: 100px; left: 120px; }
+    .flower:nth-child(6) { top: 140px; left: 60px; }
+    .flower:nth-child(7) { top: 30px; left: 140px; }
+    .flower:nth-child(8) { top: 110px; left: 20px; }
+
+    @keyframes bloom {
+        0%,100% {
+            transform: scale(1);
+            opacity: 0.8;
+        }
+        50% {
+            transform: scale(1.5);
+            opacity: 1;
+        }
+    }
+
+    /* texto estilo "Te Amo" */
+    .text {
+        position: absolute;
+        top: 20px;
+        width: 100%;
+        text-align: center;
+        font-size: 24px;
+        color: #444;
+        font-family: "Courier New", monospace;
+    }
 </style>
 </head>
-
 <body>
 
-<div id="texto"></div>
-<div id="carta"></div>
-<button id="btn">▶️ Reproducir música</button>
+<div class="scene">
+    <div class="text">Te Amo 🌼</div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <div class="trunk">
+        <div class="branch left">
+            <div class="flowers">
+                <div class="flower"></div>
+                <div class="flower"></div>
+                <div class="flower"></div>
+                <div class="flower"></div>
+            </div>
+        </div>
 
-<script>
+        <div class="branch right">
+            <div class="flowers">
+                <div class="flower"></div>
+                <div class="flower"></div>
+                <div class="flower"></div>
+                <div class="flower"></div>
+            </div>
+        </div>
+    </div>
 
-// ESCENA
-let scene = new THREE.Scene();
-let camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight,0.1,3000);
-camera.position.z = 800;
-
-let renderer = new THREE.WebGLRenderer({alpha:true});
-renderer.setSize(window.innerWidth, window.innerHeight);
-document.body.appendChild(renderer.domElement);
-
-// LUZ
-let light = new THREE.PointLight(0xff99cc, 2, 2000);
-light.position.set(0,200,300);
-scene.add(light);
-
-// PARTÍCULAS
-let geo = new THREE.BufferGeometry();
-let arr = [];
-
-for(let i=0;i<3000;i++){
-    arr.push(
-        (Math.random()-0.5)*1200,
-        Math.random()*1000,
-        (Math.random()-0.5)*1200
-    );
-}
-
-geo.setAttribute('position', new THREE.Float32BufferAttribute(arr,3));
-let mat = new THREE.PointsMaterial({
-    color:0xff99cc,
-    size:3,
-    transparent:true
-});
-let petals = new THREE.Points(geo,mat);
-scene.add(petals);
-
-// CORAZÓN
-let heartGeo = new THREE.SphereGeometry(120,32,32);
-let heartMat = new THREE.MeshStandardMaterial({
-    color:0xff3366,
-    emissive:0xff0044,
-    emissiveIntensity:2
-});
-let heart = new THREE.Mesh(heartGeo,heartMat);
-heart.visible = false;
-scene.add(heart);
-
-// 🎵 AUDIO DESDE TU GITHUB
-let audio = new Audio("https://raw.githubusercontent.com/Tager123344/aniversario-/main/music.mp3");
-audio.loop = true;
-audio.volume = 0.5;
-
-let iniciado = false;
-
-// FRASES
-let frases = [
-    "No fue suerte...",
-    "No fue coincidencia...",
-    "Fue el destino...",
-    "Eligiéndote a ti...",
-    "Entre millones de caminos...",
-    "Y volvería a hacerlo...",
-    "Una y mil veces más..."
-];
-
-let i = 0;
-
-// BOTÓN
-document.getElementById("btn").onclick = ()=>{
-
-    if(!iniciado){
-        audio.play().then(()=>{
-            iniciado = true;
-            document.getElementById("btn").innerHTML = "⏸️ Pausar música";
-            siguiente();
-        }).catch(()=>{
-            alert("Toca otra vez 💖");
-        });
-    } else {
-        if(audio.paused){
-            audio.play();
-            document.getElementById("btn").innerHTML = "⏸️ Pausar música";
-        } else {
-            audio.pause();
-            document.getElementById("btn").innerHTML = "▶️ Reproducir música";
-        }
-    }
-};
-
-// TEXTO
-function siguiente(){
-    if(i>=frases.length){
-        mostrarCarta();
-        return;
-    }
-
-    let t = document.getElementById("texto");
-    t.innerHTML = frases[i];
-    t.style.opacity = 1;
-
-    setTimeout(()=>{
-        t.style.opacity = 0;
-        i++;
-        setTimeout(siguiente,2000);
-    },4000);
-}
-
-// CARTA FINAL
-function mostrarCarta(){
-    heart.visible = true;
-
-    let carta = document.getElementById("carta");
-    carta.innerHTML = `
-    💖 Mi amor 💖 <br><br>
-    Desde que llegaste a mi vida, todo cambió. <br>
-    Le diste color a mis días, sentido a mis sueños <br>
-    y paz a mi corazón. <br><br>
-    
-    No importa el tiempo, no importa la distancia, <br>
-    siempre serás tú. <br><br>
-    
-    ✨ Feliz aniversario ✨ <br>
-    <strong>30/10/2025 ❤️</strong>
-    `;
-    
-    carta.style.opacity = 1;
-}
-
-// ANIMACIÓN
-function animate(){
-    requestAnimationFrame(animate);
-
-    let time = Date.now()*0.001;
-
-    camera.position.x = Math.sin(time*0.3)*50;
-    camera.position.y = Math.sin(time*0.2)*30;
-    camera.lookAt(0,0,0);
-
-    let pos = geo.attributes.position.array;
-    for(let i=0;i<3000;i++){
-        pos[i*3+1] -= 1.2;
-        if(pos[i*3+1] < -300){
-            pos[i*3+1] = 1000;
-        }
-    }
-    geo.attributes.position.needsUpdate = true;
-
-    if(heart.visible){
-        let scale = 1 + Math.sin(time*3)*0.15;
-        heart.scale.set(scale,scale,scale);
-        heart.rotation.y += 0.01;
-    }
-
-    renderer.render(scene,camera);
-}
-
-animate();
-
-</script>
+    <div class="ground"></div>
+</div>
 
 </body>
 </html>
