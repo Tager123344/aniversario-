@@ -3,356 +3,225 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Para mi Niña Preciosa - Felices 5 Meses</title>
-    <link href="https://fonts.googleapis.com/css2?family=Grand+Hotel&family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+    <title>5 Meses de Nosotros</title>
+    <link href="https://fonts.googleapis.com/css2?family=Gaegu:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        /* --- CORE STYLES (Snoopy-like Palette) --- */
         :root {
-            --bg-color: #FFEDF0; /* Soft Pastel Pink */
-            --card-color: #FFFFFF;
-            --text-main: #5C5C5C;
-            --text-accent: #FF4757; /* Romantic Red */
-            --border-cute: #FFC0CB;
-            --shadow: 0 8px 15px rgba(255, 71, 87, 0.1);
+            --snoopy-white: #FFFFFF;
+            --snoopy-black: #222222;
+            --snoopy-red: #E53935;
+            --snoopy-yellow: #FFD54F;
         }
 
         body {
-            background-color: var(--bg-color);
-            background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgdmlld0JveD0iMCAwIDIwIDIwIj48ZyBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmNmY2QiIGZpbGwtb3BhY2l0eT0iMC4zNCI+PHBhdGggZD0iTTAgMGg4djhIMHptMTAgMBo4djhIMTB6TTAgMTBoOHY4SDB6bTEwIDEwaDh2OEgxMHoiLz48L2c+PC9nPjwvc3ZnPg=='); /* Subtle dot pattern */
-            font-family: 'Montserrat', sans-serif;
-            color: var(--text-main);
+            background-color: #f0f0f0;
+            font-family: 'Gaegu', cursive;
             margin: 0;
-            padding: 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
+            color: var(--snoopy-black);
             overflow-x: hidden;
         }
 
-        /* --- SNOOPY IMAGE SPOT (Very Important) --- */
-        .character-spot {
-            width: 150px;
-            height: 150px;
-            margin-top: 30px;
-            background-color: var(--card-color);
-            border-radius: 50%;
-            border: 4px solid var(--border-cute);
-            box-shadow: var(--shadow);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            position: relative;
-            overflow: hidden;
-            animation: floating 3s ease-in-out infinite;
-        }
-
-        /* INSTRUCTIONS FOR YOU: Reemplaza la URL abajo por una de Snoopy si gustas */
-        .character-img {
-            max-width: 80%;
-            max-height: 80%;
-            opacity: 0.9;
-        }
-
-        @keyframes floating {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-
-        /* --- HEADER & COUNTER --- */
-        h1 {
-            font-family: 'Grand Hotel', cursive;
-            font-size: 3.5rem;
-            color: var(--text-accent);
-            margin: 15px 0 5px 0;
-            text-align: center;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.05);
-        }
-
-        .subtitle {
-            font-size: 1rem;
-            font-weight: 400;
-            color: #888;
-            margin-bottom: 30px;
-        }
-
-        .counter-container {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 40px;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-
-        .counter-box {
-            background: var(--card-color);
-            padding: 15px 20px;
-            border-radius: 15px;
-            box-shadow: var(--shadow);
-            border: 2px solid var(--border-cute);
-            text-align: center;
-            min-width: 80px;
-        }
-
-        .counter-val {
-            font-size: 2.2rem;
-            font-weight: 600;
-            color: var(--text-accent);
-        }
-
-        .counter-label {
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: #888;
-        }
-
-        /* --- MEMORY BOX (The improved cards) --- */
-        .memory-box {
-            max-width: 800px;
+        /* --- CONTADOR ESTILO RETRO --- */
+        .header-section {
+            background: var(--snoopy-white);
+            border-bottom: 5px solid var(--snoopy-black);
             width: 100%;
-            margin-top: 20px;
-        }
-
-        .memory-title {
-            font-family: 'Grand Hotel', cursive;
-            font-size: 2.5rem;
-            color: var(--text-accent);
+            padding: 40px 20px;
             text-align: center;
-            margin-bottom: 25px;
+            box-shadow: 0 4px 0 rgba(0,0,0,0.1);
         }
 
-        .timeline {
-            position: relative;
-            padding-left: 30px;
-        }
+        h1 { font-size: 3rem; margin: 0; text-transform: uppercase; }
 
-        .timeline::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 10px;
-            bottom: 10px;
-            width: 4px;
-            background: var(--border-cute);
-            border-radius: 2px;
-        }
-
-        .timeline-item {
-            position: relative;
-            margin-bottom: 30px;
-            cursor: pointer;
-        }
-
-        .timeline-dot {
-            position: absolute;
-            left: -38px;
-            top: 5px;
-            width: 20px;
-            height: 20px;
-            background: var(--card-color);
-            border: 4px solid var(--text-accent);
-            border-radius: 50%;
-            z-index: 2;
-            transition: all 0.3s ease;
-        }
-
-        .timeline-item:hover .timeline-dot {
-            transform: scale(1.3);
-            background: var(--text-accent);
-        }
-
-        .timeline-content {
-            background: var(--card-color);
-            padding: 20px;
-            border-radius: 15px;
-            box-shadow: var(--shadow);
-            transition: transform 0.3s ease;
-            position: relative;
-        }
-
-        .timeline-item:hover .timeline-content {
-            transform: translateX(5px);
-        }
-
-        .timeline-date {
-            font-size: 0.85rem;
-            color: var(--text-accent);
-            font-weight: 600;
-            margin-bottom: 5px;
-        }
-
-        .timeline-h {
-            font-size: 1.2rem;
-            font-weight: 600;
-            margin: 0 0 10px 0;
+        #timer {
             display: flex;
-            align-items: center;
-            gap: 10px;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+            flex-wrap: wrap;
         }
 
-        .timeline-text {
-            display: none; /* Hidden by default */
-            font-size: 0.95rem;
-            line-height: 1.6;
-            color: #666;
-            margin: 0;
-            font-style: italic;
+        .time-block {
+            background: var(--snoopy-black);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 10px;
+            min-width: 60px;
         }
 
-        /* When the item is clicked (JavaScript will toggle this) */
-        .timeline-item.active .timeline-text {
-            display: block;
-            animation: fadeInDown 0.5s ease;
+        .time-block span { display: block; font-size: 1.5rem; font-weight: bold; }
+        .time-block label { font-size: 0.8rem; text-transform: uppercase; color: var(--snoopy-yellow); }
+
+        /* --- EL MINI JUEGO --- */
+        #game-container {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            height: 400px;
+            background: var(--snoopy-white);
+            border: 4px solid var(--snoopy-black);
+            margin: 40px 0;
+            overflow: hidden;
+            cursor: crosshair;
+            border-radius: 20px;
         }
 
-        @keyframes fadeInDown {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* --- FOOTER --- */
-        footer {
-            margin: 60px 0 30px 0;
-            font-family: 'Grand Hotel', cursive;
-            font-size: 2rem;
-            color: var(--text-accent);
+        .game-instruction {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
             text-align: center;
-            animation: heartBeat 2s infinite;
+            z-index: 10;
         }
 
-        @keyframes heartBeat {
-            0%, 100% { transform: scale(1); }
-            10% { transform: scale(1.1); }
-            20% { transform: scale(1); }
+        #score {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 1.5rem;
+            font-weight: bold;
         }
 
-        /* Tablet/Mobile refinements */
-        @media (max-width: 600px) {
-            h1 { font-size: 2.8rem; }
-            .counter-box { min-width: 65px; padding: 10px; }
-            .counter-val { font-size: 1.8rem; }
+        .heart {
+            position: absolute;
+            font-size: 30px;
+            cursor: pointer;
+            user-select: none;
+            transition: transform 0.1s;
+        }
+
+        .heart:hover { transform: scale(1.5); }
+
+        /* --- MENSAJE FINAL (OCULTO) --- */
+        #final-message {
+            display: none;
+            max-width: 600px;
+            padding: 40px;
+            text-align: center;
+            background: var(--snoopy-yellow);
+            border: 4px solid var(--snoopy-black);
+            border-radius: 30px;
+            margin-bottom: 50px;
+            animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes popIn {
+            from { transform: scale(0); }
+            to { transform: scale(1); }
+        }
+
+        .real-phrases {
+            font-size: 1.4rem;
+            line-height: 1.6;
+            text-align: left;
+        }
+
+        .btn-start {
+            background: var(--snoopy-red);
+            color: white;
+            border: 3px solid var(--snoopy-black);
+            padding: 15px 30px;
+            font-family: 'Gaegu', cursive;
+            font-size: 1.5rem;
+            cursor: pointer;
+            border-radius: 50px;
+            box-shadow: 0 4px 0 var(--snoopy-black);
+        }
+
+        .btn-start:active { transform: translateY(4px); box-shadow: 0 0 0; }
+
+        /* --- DECORACIÓN SNOOPY --- */
+        .snoopy-house {
+            width: 100px;
+            margin-bottom: -10px;
         }
     </style>
 </head>
 <body>
 
-    <div class="character-spot">
-        <span style="font-size: 80px;">🐶❤️☁️</span> </div>
-
-    <h1>Felices 5 Meses, mi niña</h1>
-    <div class="subtitle">Desde el mágico 30 de Octubre del 2025</div>
-
-    <div class="counter-container">
-        <div class="counter-box">
-            <div class="counter-val" id="days">00</div>
-            <div class="counter-label">Días</div>
-        </div>
-        <div class="counter-box">
-            <div class="counter-val" id="hours">00</div>
-            <div class="counter-label">Horas</div>
-        </div>
-        <div class="counter-box">
-            <div class="counter-val" id="minutes">00</div>
-            <div class="counter-label">Min</div>
-        </div>
-        <div class="counter-box">
-            <div class="counter-val" id="seconds">00</div>
-            <div class="counter-label">Seg</div>
+    <div class="header-section">
+        <img src="https://upload.wikimedia.org/wikipedia/en/5/53/Snoopy_Peanuts.png" alt="Snoopy" style="width: 80px;">
+        <h1>Nuestros primeros 5 meses</h1>
+        <div id="timer">
+            <div class="time-block"><span id="days">0</span><label>Días</label></div>
+            <div class="time-block"><span id="hours">0</span><label>Horas</label></div>
+            <div class="time-block"><span id="mins">0</span><label>Min</label></div>
+            <div class="time-block"><span id="secs">0</span><label>Seg</label></div>
         </div>
     </div>
 
-    <div class="memory-box">
-        <div class="memory-title">Nuestra Caja de Recuerdos</div>
-        <p style="text-align:center; color: #888; font-size: 0.9rem;"><i>(Toca un recuerdo para leer más)</i></p>
-        
-        <div class="timeline">
-            <div class="timeline-item" onclick="toggleMemory(this)">
-                <div class="timeline-dot"></div>
-                <div class="timeline-content">
-                    <div class="timeline-date">30 Octubre 2025</div>
-                    <h3 class="timeline-h">✨ El Comienzo de Todo</h3>
-                    <p class="timeline-text">
-                        Aquel día el mundo se volvió más brillante. No tenía idea de que al decir "sí", estaba empezando la aventura más hermosa de mi vida. Gracias por elegirme.
-                    </p>
-                </div>
-            </div>
-
-            <div class="timeline-item" onclick="toggleMemory(this)">
-                <div class="timeline-dot"></div>
-                <div class="timeline-content">
-                    <div class="timeline-date">Día a Día</div>
-                    <h3 class="timeline-h">😊 Tu Sonrisa Mágica</h3>
-                    <p class="timeline-text">
-                        Amo cómo tu sonrisa ilumina incluso mis días más grises. Eres mi refugio y mi alegría constante en estos 150 días (¡y contando!).
-                    </p>
-                </div>
-            </div>
-
-            <div class="timeline-item" onclick="toggleMemory(this)">
-                <div class="timeline-dot"></div>
-                <div class="timeline-content">
-                    <div class="timeline-date">Aventura</div>
-                    <h3 class="timeline-h">🚀 Nuestros Proyectos</h3>
-                    <p class="timeline-text">
-                        Me encanta cómo nos apoyamos. Ya sea construyendo código, soñando despiertos o simplemente estando juntos, sé que somos el mejor equipo.
-                    </p>
-                </div>
-            </div>
-
-            <div class="timeline-item" onclick="toggleMemory(this)">
-                <div class="timeline-dot"></div>
-                <div class="timeline-content">
-                    <div class="timeline-date">Hoy</div>
-                    <h3 class="timeline-h">💖 Te Amo Más</h3>
-                    <p class="timeline-text">
-                        5 meses son solo el prólogo. Estoy emocionado por cada día que viene, por cada risa que compartiremos y por cada sueño que cumpliremos juntos. Eres todo para mí.
-                    </p>
-                </div>
-            </div>
-
+    <div id="game-container">
+        <div class="game-instruction" id="start-screen">
+            <h2>¡Atrapa 10 corazones de Snoopy!</h2>
+            <p>Para desbloquear tu regalo de 5 meses...</p>
+            <button class="btn-start" onclick="startGame()">EMPEZAR JUEGO</button>
         </div>
+        <div id="score">Corazones: 0/10</div>
     </div>
 
-    <footer>Te amo, mi preciosa 🐾</footer>
+    <div id="final-message">
+        <h2>🎉 ¡Lo lograste, amor! 🎉</h2>
+        <div class="real-phrases">
+            <p>Desde el <b>30 de octubre</b> mi mundo es otro. No te voy a decir que eres una estrella, te voy a decir que <b>eres mi persona favorita para perder el tiempo</b>, y eso vale mucho más.</p>
+            <p>Gracias por aguantarme estos 5 meses, por las risas que solo nosotros entendemos y por ser tan tú. No necesito que sea perfecto mientras sea con nosotros.</p>
+            <p style="text-align: center; font-weight: bold; font-size: 1.8rem;">Te amo muchísimo ❤️</p>
+        </div>
+        <img src="https://www.pngplay.com/wp-content/uploads/12/Snoopy-Dog-Transparent-Background.png" style="width: 150px;">
+    </div>
 
     <script>
-        /* --- TIMER LOGIC (Since Oct 30, 2025) --- */
+        // --- LÓGICA DEL CONTADOR ---
         const startDate = new Date("October 30, 2025 00:00:00").getTime();
-
-        function updateCounter() {
+        
+        function updateTimer() {
             const now = new Date().getTime();
-            const difference = now - startDate;
+            const diff = now - startDate;
+            
+            document.getElementById("days").innerText = Math.floor(diff / (1000 * 60 * 60 * 24));
+            document.getElementById("hours").innerText = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            document.getElementById("mins").innerText = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            document.getElementById("secs").innerText = Math.floor((diff % (1000 * 60)) / 1000);
+        }
+        setInterval(updateTimer, 1000);
+        updateTimer();
 
-            // Time calculations for days, hours, minutes and seconds
-            const d = Math.floor(difference / (1000 * 60 * 60 * 24));
-            const h = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const m = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
-            const s = Math.floor((difference % (1000 * 60)) / 1000);
+        // --- LÓGICA DEL JUEGO ---
+        let score = 0;
+        const gameContainer = document.getElementById('game-container');
+        const scoreDisplay = document.getElementById('score');
+        const finalMessage = document.getElementById('final-message');
 
-            // Update the DOM, adding leading zeros if needed
-            document.getElementById("days").innerText = d < 10 ? '0' + d : d;
-            document.getElementById("hours").innerText = h < 10 ? '0' + h : h;
-            document.getElementById("minutes").innerText = m < 10 ? '0' + m : m;
-            document.getElementById("seconds").innerText = s < 10 ? '0' + s : s;
+        function startGame() {
+            document.getElementById('start-screen').style.display = 'none';
+            spawnHeart();
         }
 
-        // Run the counter immediately and then every second
-        updateCounter();
-        setInterval(updateCounter, 1000);
-
-        /* --- TIMELINE INTERACTION LOGIC --- */
-        function toggleMemory(element) {
-            // Check if this item is already active
-            const isActive = element.classList.contains('active');
-            
-            // Optionally, you can close other open items here if you want:
-            // document.querySelectorAll('.timeline-item').forEach(item => item.classList.remove('active'));
-
-            if (isActive) {
-                element.classList.remove('active');
-            } else {
-                element.classList.add('active');
+        function spawnHeart() {
+            if (score >= 10) {
+                gameContainer.style.display = 'none';
+                finalMessage.style.display = 'block';
+                window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+                return;
             }
+
+            const heart = document.createElement('div');
+            heart.className = 'heart';
+            heart.innerHTML = '❤️';
+            heart.style.left = Math.random() * (gameContainer.clientWidth - 40) + 'px';
+            heart.style.top = Math.random() * (gameContainer.clientHeight - 40) + 'px';
+            
+            heart.onclick = () => {
+                score++;
+                scoreDisplay.innerText = `Corazones: ${score}/10`;
+                heart.remove();
+                spawnHeart();
+            };
+
+            gameContainer.appendChild(heart);
         }
     </script>
 </body>
