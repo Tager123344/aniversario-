@@ -7,10 +7,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Short+Stack&family=Gaegu:wght@700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --fondo: #FF80AB; /* Rosa vibrante */
-            --snoopy-rojo: #FF1744;
-            --snoopy-amarillo: #FFD600;
-            --borde: #212121;
+            --fondo: #81D4FA; 
+            --snoopy-rojo: #EF5350;
+            --snoopy-amarillo: #FFEB3B;
+            --borde: #1A1A1A;
         }
 
         body {
@@ -30,7 +30,7 @@
             background: white;
             border-bottom: 6px solid var(--borde);
             width: 100%;
-            padding: 25px 0;
+            padding: 30px 0;
             text-align: center;
             box-shadow: 0 8px 0 rgba(0,0,0,0.1);
         }
@@ -38,50 +38,67 @@
         .contador-grid {
             display: flex;
             justify-content: center;
-            gap: 8px;
+            gap: 10px;
             margin-top: 15px;
         }
 
         .bloque {
             background: var(--snoopy-amarillo);
             border: 3px solid var(--borde);
-            padding: 6px;
+            padding: 8px;
             border-radius: 12px;
-            min-width: 60px;
+            min-width: 65px;
         }
 
-        .bloque span { display: block; font-size: 1.6rem; font-weight: bold; }
-        .bloque label { font-size: 0.65rem; font-weight: bold; }
+        .bloque span { display: block; font-size: 1.8rem; font-weight: bold; }
+        .bloque label { font-size: 0.7rem; font-weight: bold; text-transform: uppercase; }
 
         /* --- ÁREA DEL JUEGO --- */
-        #game-container {
+        #game-zone {
             position: relative;
             width: 90%;
             max-width: 500px;
             height: 400px;
-            background: #FFF9C4; /* Amarillo pastel */
+            background: #fff;
             border: 5px solid var(--borde);
-            margin: 25px 0;
-            border-radius: 20px;
+            margin: 30px 0;
+            border-radius: 25px;
             overflow: hidden;
-            box-shadow: 12px 12px 0 var(--borde);
+            box-shadow: 10px 10px 0 var(--borde);
         }
 
         .heart {
             position: absolute;
-            font-size: 40px;
+            font-size: 45px;
             cursor: pointer;
-            z-index: 10;
+            z-index: 5;
             user-select: none;
-            filter: drop-shadow(2px 2px 0 white);
         }
 
-        /* --- EFECTO LLUVIA DE CORAZONES --- */
+        .pop-text {
+            position: absolute;
+            font-weight: bold;
+            color: var(--snoopy-rojo);
+            pointer-events: none;
+            animation: flyUp 1s forwards;
+            font-family: 'Gaegu', cursive;
+            font-size: 1.8rem;
+            z-index: 100;
+            text-shadow: 2px 2px 0 white;
+            white-space: nowrap;
+        }
+
+        @keyframes flyUp {
+            0% { transform: translateY(0) scale(1); opacity: 1; }
+            100% { transform: translateY(-80px) scale(1.5); opacity: 0; }
+        }
+
+        /* --- LLUVIA DE CORAZONES --- */
         .falling-heart {
             position: fixed;
             top: -50px;
-            font-size: 25px;
-            z-index: 999;
+            font-size: 30px;
+            z-index: 1000;
             pointer-events: none;
             animation: fall linear forwards;
         }
@@ -90,52 +107,48 @@
             to { transform: translateY(110vh) rotate(360deg); }
         }
 
-        /* --- CARTA FINAL --- */
+        /* --- MENSAJE FINAL --- */
         #final-card {
             display: none;
             width: 85%;
             max-width: 550px;
             background: white;
-            border: 6px solid var(--borde);
+            border: 5px solid var(--borde);
             border-radius: 30px;
-            padding: 30px;
+            padding: 40px 25px;
             margin-bottom: 50px;
-            box-shadow: 15px 15px 0 var(--snoopy-amarillo);
-            z-index: 1000;
+            box-shadow: 15px 15px 0 var(--snoopy-rojo);
+            text-align: center;
+            z-index: 2000;
         }
 
-        .btn-main {
+        .texto-amor {
+            font-size: 1.4rem;
+            line-height: 1.6;
+            color: #333;
+            text-align: left;
+            border-left: 8px solid var(--snoopy-amarillo);
+            padding-left: 15px;
+        }
+
+        .btn-play {
             background: var(--snoopy-rojo);
             color: white;
             border: 4px solid var(--borde);
-            padding: 15px 35px;
-            font-size: 1.8rem;
+            padding: 15px 40px;
+            font-size: 1.6rem;
             border-radius: 50px;
             cursor: pointer;
-            font-family: 'Gaegu';
             box-shadow: 0 6px 0 var(--borde);
         }
 
-        .btn-main:active { transform: translateY(4px); box-shadow: 0 2px 0 var(--borde); }
-
-        .pop-txt {
-            position: absolute;
-            font-weight: bold;
-            color: var(--snoopy-rojo);
-            animation: popUp 0.6s forwards;
-            font-size: 1.5rem;
-            pointer-events: none;
-        }
-
-        @keyframes popUp {
-            0% { transform: scale(0.5); opacity: 1; }
-            100% { transform: translateY(-60px) scale(1.5); opacity: 0; }
-        }
+        .btn-play:active { transform: translateY(4px); box-shadow: 0 2px 0 var(--borde); }
     </style>
 </head>
 <body>
 
-    <audio id="musica" loop>
+    <audio id="musicaFondo" loop>
+        <source src="musica.mp3" type="audio/mpeg">
         <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
     </audio>
 
@@ -149,23 +162,23 @@
         </div>
     </div>
 
-    <div id="game-container">
-        <div id="intro" style="text-align:center; padding-top: 100px;">
-            <h2 style="font-size: 1.8rem;">¡Hola, mi gordita! ❤️</h2>
-            <p>Atrapa 10 corazones para ver tu sorpresa...</p>
-            <button class="btn-main" onclick="empezarTodo()">¡EMPEZAR!</button>
+    <div id="game-zone">
+        <div id="start-screen" style="text-align:center; padding-top: 100px;">
+            <h2 style="font-size: 2rem;">¿Lista para tu sorpresa?</h2>
+            <p>Atrapa 10 corazones para desbloquearlo</p>
+            <button class="btn-play" onclick="initExperience()">¡JUGAR!</button>
         </div>
-        <div id="puntos" style="display:none; position:absolute; top:10px; right:15px; font-weight:bold; font-size:1.3rem; background: white; padding: 5px 15px; border: 3px solid var(--borde); border-radius: 10px;">
+        <div id="score-board" style="display:none; position:absolute; top:10px; left:15px; font-weight:bold; font-size:1.4rem; background:rgba(255,255,255,0.8); padding:5px 10px; border-radius:10px;">
             ❤️ <span id="score">0</span>/10
         </div>
     </div>
 
     <div id="final-card">
-        <h2 style="font-family:'Gaegu'; font-size: 2.5rem; color: var(--snoopy-rojo); margin-top:0; text-align:center;">¡LO LOGRASTE! 🎉</h2>
-        <div style="font-size: 1.3rem; line-height: 1.6; border-left: 6px solid var(--snoopy-amarillo); padding-left: 15px;">
+        <h2 style="font-family:'Gaegu'; font-size: 2.8rem; color: var(--snoopy-rojo); margin-top:0;">¡Felicidades, mi amor! 🎉</h2>
+        <div class="texto-amor">
             <p>Desde el <b>30 de octubre</b> mi mundo es otro. No te voy a decir que eres una estrella, te voy a decir que <b>eres mi persona favorita para perder el tiempo</b>, y eso vale mucho más.</p>
             <p>Gracias por aguantarme estos 5 meses, por las risas que solo nosotros entendemos y por ser tan tú. No necesito que sea perfecto mientras sea solo nosotros.</p>
-            <p style="text-align: center; font-size: 2rem; font-weight: bold; color: var(--snoopy-rojo); margin-top: 20px;">
+            <p style="text-align: center; font-size: 2.2rem; font-weight: bold; color: var(--snoopy-rojo); margin-top:20px;">
                 Te amo mi gordita hermosa ❤️
             </p>
         </div>
@@ -173,78 +186,80 @@
 
     <script>
         // CONTADOR
-        const inicio = new Date("October 30, 2025 00:00:00").getTime();
+        const start = new Date("October 30, 2025 00:00:00").getTime();
         setInterval(() => {
-            const ahora = new Date().getTime();
-            const diff = ahora - inicio;
-            document.getElementById('d').innerText = Math.floor(diff / 86400000);
-            document.getElementById('h').innerText = Math.floor((diff % 86400000) / 3600000);
-            document.getElementById('m').innerText = Math.floor((diff % 3600000) / 60000);
-            document.getElementById('s').innerText = Math.floor((diff % 60000) / 1000);
+            const now = new Date().getTime();
+            const d = now - start;
+            document.getElementById('d').innerText = Math.floor(d / 86400000);
+            document.getElementById('h').innerText = Math.floor((d % 86400000) / 3600000);
+            document.getElementById('m').innerText = Math.floor((d % 3600000) / 60000);
+            document.getElementById('s').innerText = Math.floor((d % 60000) / 1000);
         }, 1000);
 
-        // JUEGO Y MÚSICA
-        let score = 0;
-        const frasesPop = ["¡TE AMO!", "¡GUAPA!", "¡MUA!", "¡MÍA!", "✨", "❤️", "¡LINDA!", "¡PRECIOSA!", "🥰", "¡BUM!"];
-        const game = document.getElementById('game-container');
-        const musica = document.getElementById('musica');
+        // JUEGO
+        let puntos = 0;
+        const frasesPop = ["¡PUM!", "¡TE AMO!", "¡GUAPA!", "❤️", "¡ERES MÍA!", "¡DIVINA!", "✨", "¡MUAK!", "🥰", "¡PRECIOSA!"];
+        const gameZone = document.getElementById('game-zone');
+        const audio = document.getElementById('musicaFondo');
 
-        function empezarTodo() {
-            document.getElementById('intro').style.display = 'none';
-            document.getElementById('puntos').style.display = 'block';
-            musica.play().catch(e => console.log("Error con audio:", e));
-            soltarCorazon();
+        function initExperience() {
+            document.getElementById('start-screen').style.display = 'none';
+            document.getElementById('score-board').style.display = 'block';
+            
+            // Iniciar música tras interacción
+            audio.play().catch(e => console.log("Audio esperando archivo local..."));
+            
+            spawnHeart();
         }
 
-        function soltarCorazon() {
-            if (score >= 10) {
-                terminarJuego();
+        function spawnHeart() {
+            if (puntos >= 10) {
+                endGame();
                 return;
             }
 
             const h = document.createElement('div');
             h.className = 'heart';
             h.innerHTML = '❤️';
-            h.style.left = Math.random() * (game.clientWidth - 50) + 'px';
-            h.style.top = Math.random() * (game.clientHeight - 50) + 'px';
+            h.style.left = Math.random() * (gameZone.clientWidth - 60) + 'px';
+            h.style.top = Math.random() * (gameZone.clientHeight - 60) + 'px';
             
             h.onclick = (e) => {
-                score++;
-                document.getElementById('score').innerText = score;
+                puntos++;
+                document.getElementById('score').innerText = puntos;
                 
-                // Efecto texto explosivo
-                const t = document.createElement('div');
-                t.className = 'pop-txt';
-                t.innerText = frasesPop[score-1];
-                t.style.left = e.offsetX + 'px';
-                t.style.top = e.offsetY + 'px';
-                game.appendChild(t);
+                // FRASE JUSTO ARRIBA DEL CLICK
+                const txt = document.createElement('div');
+                txt.className = 'pop-text';
+                txt.innerText = frasesPop[puntos - 1];
+                txt.style.left = (h.offsetLeft) + 'px';
+                txt.style.top = (h.offsetTop) + 'px';
+                gameZone.appendChild(txt);
                 
                 h.remove();
-                setTimeout(() => t.remove(), 600);
-                soltarCorazon();
+                setTimeout(() => txt.remove(), 1000);
+                spawnHeart();
             };
-            game.appendChild(h);
+            gameZone.appendChild(h);
         }
 
-        function terminarJuego() {
-            game.style.display = 'none';
+        function endGame() {
+            gameZone.style.display = 'none';
             document.getElementById('final-card').style.display = 'block';
-            document.body.style.background = '#FF1744'; // Cambia a rojo intenso
-            lluviaCorazones();
+            document.body.style.background = '#FF5252';
+            lluvia();
         }
 
-        function lluviaCorazones() {
+        function lluvia() {
             setInterval(() => {
-                const heart = document.createElement('div');
-                heart.className = 'falling-heart';
-                heart.innerHTML = '❤️';
-                heart.style.left = Math.random() * 100 + 'vw';
-                heart.style.animationDuration = (Math.random() * 2 + 2) + 's';
-                heart.style.opacity = Math.random();
-                document.body.appendChild(heart);
-                setTimeout(() => heart.remove(), 4000);
-            }, 100);
+                const lh = document.createElement('div');
+                lh.className = 'falling-heart';
+                lh.innerHTML = '❤️';
+                lh.style.left = Math.random() * 100 + 'vw';
+                lh.style.animationDuration = (Math.random() * 2 + 3) + 's';
+                document.body.appendChild(lh);
+                setTimeout(() => lh.remove(), 5000);
+            }, 150);
         }
     </script>
 </body>
