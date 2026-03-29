@@ -3,37 +3,148 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Felices 5 Meses</title>
-    <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
+    <title>Para mi Niña - 5 Meses</title>
+    <style>
+        :root {
+            --color-fondo: #fff5f5;
+            --color-principal: #ff4d6d;
+            --color-secundario: #ffb3c1;
+        }
+
+        body {
+            background-color: var(--color-fondo);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 0;
+            padding: 20px;
+            color: #4a4a4a;
+        }
+
+        h1 {
+            color: var(--color-principal);
+            text-align: center;
+            margin-top: 30px;
+            font-size: 2rem;
+            animation: latido 2s infinite;
+        }
+
+        @keyframes latido {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .grid-recuerdos {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            max-width: 1000px;
+            width: 100%;
+            margin-top: 40px;
+        }
+
+        .tarjeta {
+            background: white;
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 0 10px 20px rgba(255, 77, 109, 0.1);
+            border: 2px solid var(--color-secundario);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tarjeta:hover {
+            transform: translateY(-10px);
+            background-color: var(--color-secundario);
+            color: white;
+        }
+
+        .tarjeta h2 {
+            margin-top: 0;
+            font-size: 1.2rem;
+        }
+
+        .contenido-oculto {
+            display: none;
+            margin-top: 15px;
+            font-style: italic;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .tarjeta.abierta .contenido-oculto {
+            display: block;
+            animation: aparecer 0.5s ease;
+        }
+
+        .tarjeta.abierta .emoji {
+            display: none;
+        }
+
+        @keyframes aparecer {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        footer {
+            margin-top: 50px;
+            font-size: 0.8rem;
+            color: var(--color-principal);
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
-    <a-scene>
-        <a-sky color="#FFB6C1"></a-sky>
 
-        <a-text value="Felices 5 Meses, mi amor\n(30 de Octubre - 30 de Marzo)"
-                align="center"
-                position="0 2.5 -3"
-                color="#8B0000"
-                scale="1.2 1.2 1.2"
-                font="kelsonsans"
-                animation="property: position; to: 0 2.7 -3; dir: alternate; dur: 2000; loop: true">
-        </a-text>
+    <h1>Felices 5 Meses, mi amor ❤️</h1>
+    <p>Desde el 30 de octubre de 2025 cada día es especial.</p>
+    <p><i>(Toca cada tarjeta para ver un mensaje)</i></p>
 
-        <a-plane position="0 0 -4" rotation="-90 0 0" width="15" height="15" color="#7BC8A4"></a-plane>
+    <div class="grid-recuerdos">
+        <div class="tarjeta" onclick="abrirTarjeta(this)">
+            <span class="emoji">🎁</span>
+            <h2>Nuestro Inicio</h2>
+            <p class="contenido-oculto">
+                Todo comenzó un 30 de octubre. No sabía que ese día mi vida cambiaría para mejor. ¡Gracias por estos 5 meses!
+            </p>
+        </div>
 
-        <a-sphere position="-2 1 -3" radius="0.3" color="#FF69B4" animation="property: position; to: -2 1.5 -3; dir: alternate; dur: 1500; loop: true"></a-sphere>
-        <a-sphere position="2 1.2 -4" radius="0.4" color="#FF1493" animation="property: position; to: 2 1.8 -4; dir: alternate; dur: 1200; loop: true"></a-sphere>
+        <div class="tarjeta" onclick="abrirTarjeta(this)">
+            <span class="emoji">✨</span>
+            <h2>Lo que más amo</h2>
+            <p class="contenido-oculto">
+                Amo tu sonrisa, tu forma de apoyarme en mis proyectos y cómo haces que cada momento sea único.
+            </p>
+        </div>
 
-        <a-cylinder position="-1.5 0.2 -2.5" radius="0.08" height="0.4" color="#F5F5DC"></a-cylinder>
-        <a-sphere position="-1.5 0.45 -2.5" radius="0.25" color="#FF3333"></a-sphere>
+        <div class="tarjeta" onclick="abrirTarjeta(this)">
+            <span class="emoji">🌙</span>
+            <h2>Mi Promesa</h2>
+            <p class="contenido-oculto">
+                Prometo seguir construyendo cosas bonitas para ti, no solo en código, sino en nuestra vida real.
+            </p>
+        </div>
 
-        <a-cylinder position="1.2 0.15 -2" radius="0.06" height="0.3" color="#F5F5DC"></a-cylinder>
-        <a-sphere position="1.2 0.35 -2" radius="0.2" color="#FF3333"></a-sphere>
+        <div class="tarjeta" onclick="abrirTarjeta(this)">
+            <span class="emoji">🚀</span>
+            <h2>El Futuro</h2>
+            <p class="contenido-oculto">
+                5 meses son solo el inicio. ¡Prepárate porque vamos por muchísimos más! Te amo.
+            </p>
+        </div>
+    </div>
 
-        <a-cylinder position="0.5 0.2 -4.5" radius="0.1" height="0.4" color="#F5F5DC"></a-cylinder>
-        <a-sphere position="0.5 0.5 -4.5" radius="0.3" color="#FF3333"></a-sphere>
+    <footer>Hecho con amor para ti — 30 de marzo</footer>
 
-        <a-camera position="0 1.6 0"></a-camera>
-    </a-scene>
+    <script>
+        function abrirTarjeta(elemento) {
+            elemento.classList.toggle('abierta');
+        }
+    </script>
 </body>
 </html>
