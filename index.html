@@ -3,145 +3,149 @@
 <head>
 <meta charset="UTF-8">
 <title>Flores Amarillas</title>
+
 <style>
-    body {
-        margin: 0;
-        height: 100vh;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        background: #111;
-        font-family: "Arial", sans-serif;
-    }
+:root{
+    --bg: #e9dfd4;
+    --trunk: #7a4b2a;
+    --flower: #ffd54f;
+}
 
-    .scene {
-        width: 350px;
-        height: 400px;
-        background: #e8dfd5;
-        border-radius: 20px;
-        position: relative;
-        overflow: hidden;
-    }
+body{
+    margin:0;
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:#111;
+}
 
-    /* suelo */
-    .ground {
-        position: absolute;
-        bottom: 40px;
-        width: 100%;
-        height: 2px;
-        background: #333;
-    }
+/* tarjeta */
+.card{
+    width:320px;
+    height:380px;
+    background:var(--bg);
+    border-radius:20px;
+    position:relative;
+    overflow:hidden;
+}
 
-    /* tronco */
-    .trunk {
-        position: absolute;
-        bottom: 40px;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 20px;
-        height: 120px;
-        background: #8b5a2b;
-        border-radius: 5px;
-    }
+/* suelo */
+.line{
+    position:absolute;
+    bottom:40px;
+    width:100%;
+    height:2px;
+    background:#222;
+}
 
-    /* ramas */
-    .branch {
-        position: absolute;
-        width: 80px;
-        height: 6px;
-        background: #8b5a2b;
-        top: -20px;
-        left: -30px;
-        transform-origin: left center;
-    }
+/* tronco */
+.trunk{
+    position:absolute;
+    bottom:40px;
+    left:50%;
+    transform:translateX(-50%);
+    width:18px;
+    height:140px;
+    background:var(--trunk);
+    border-radius:5px;
+}
 
-    .branch.left {
-        transform: rotate(-30deg);
-    }
+/* ramas */
+.branch{
+    position:absolute;
+    width:90px;
+    height:6px;
+    background:var(--trunk);
+    top:30px;
+    transform-origin:left center;
+}
 
-    .branch.right {
-        transform: rotate(30deg);
-        left: -20px;
-    }
+.branch.left{
+    transform:rotate(-35deg);
+    left:-20px;
+}
 
-    /* flores */
-    .flower {
-        position: absolute;
-        width: 10px;
-        height: 10px;
-        background: yellow;
-        border-radius: 50%;
-        box-shadow: 0 0 8px yellow;
-        animation: bloom 3s infinite ease-in-out;
-    }
+.branch.right{
+    transform:rotate(35deg);
+    left:-10px;
+}
 
-    /* distribución random de flores */
-    .flowers {
-        position: absolute;
-        top: -120px;
-        left: -80px;
-        width: 200px;
-        height: 200px;
-    }
+/* flores (muchas y dispersas) */
+.flower{
+    position:absolute;
+    width:8px;
+    height:8px;
+    background:var(--flower);
+    border-radius:50%;
+    box-shadow:0 0 6px #ffeb3b;
+    animation:pop 2.5s infinite ease-in-out;
+}
 
-    .flower:nth-child(1) { top: 20px; left: 50px; }
-    .flower:nth-child(2) { top: 40px; left: 100px; }
-    .flower:nth-child(3) { top: 80px; left: 70px; }
-    .flower:nth-child(4) { top: 60px; left: 30px; }
-    .flower:nth-child(5) { top: 100px; left: 120px; }
-    .flower:nth-child(6) { top: 140px; left: 60px; }
-    .flower:nth-child(7) { top: 30px; left: 140px; }
-    .flower:nth-child(8) { top: 110px; left: 20px; }
+/* distribución tipo nube (clave para que se vea igual) */
+.f1{ top:-80px; left:20px;}
+.f2{ top:-100px; left:50px;}
+.f3{ top:-120px; left:80px;}
+.f4{ top:-90px; left:120px;}
+.f5{ top:-60px; left:140px;}
+.f6{ top:-30px; left:100px;}
+.f7{ top:-50px; left:60px;}
+.f8{ top:-20px; left:30px;}
+.f9{ top:-140px; left:100px;}
+.f10{ top:-110px; left:10px;}
+.f11{ top:-130px; left:140px;}
+.f12{ top:-70px; left:80px;}
 
-    @keyframes bloom {
-        0%,100% {
-            transform: scale(1);
-            opacity: 0.8;
-        }
-        50% {
-            transform: scale(1.5);
-            opacity: 1;
-        }
-    }
+@keyframes pop{
+    0%,100%{ transform:scale(1); opacity:.8;}
+    50%{ transform:scale(1.6); opacity:1;}
+}
 
-    /* texto estilo "Te Amo" */
-    .text {
-        position: absolute;
-        top: 20px;
-        width: 100%;
-        text-align: center;
-        font-size: 24px;
-        color: #444;
-        font-family: "Courier New", monospace;
-    }
+/* texto superior */
+.title{
+    position:absolute;
+    top:15px;
+    width:100%;
+    text-align:center;
+    font-size:22px;
+    letter-spacing:2px;
+    font-family:monospace;
+    color:#333;
+}
 </style>
+
 </head>
+
 <body>
 
-<div class="scene">
-    <div class="text">Te Amo 🌼</div>
+<div class="card">
+
+    <div class="title">ALEX DEV</div>
 
     <div class="trunk">
+
         <div class="branch left">
-            <div class="flowers">
-                <div class="flower"></div>
-                <div class="flower"></div>
-                <div class="flower"></div>
-                <div class="flower"></div>
-            </div>
+            <div class="flower f1"></div>
+            <div class="flower f2"></div>
+            <div class="flower f3"></div>
+            <div class="flower f4"></div>
+            <div class="flower f5"></div>
+            <div class="flower f6"></div>
         </div>
 
         <div class="branch right">
-            <div class="flowers">
-                <div class="flower"></div>
-                <div class="flower"></div>
-                <div class="flower"></div>
-                <div class="flower"></div>
-            </div>
+            <div class="flower f7"></div>
+            <div class="flower f8"></div>
+            <div class="flower f9"></div>
+            <div class="flower f10"></div>
+            <div class="flower f11"></div>
+            <div class="flower f12"></div>
         </div>
+
     </div>
 
-    <div class="ground"></div>
+    <div class="line"></div>
+
 </div>
 
 </body>
