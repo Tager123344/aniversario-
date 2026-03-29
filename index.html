@@ -2,205 +2,159 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Aniversario - Natasha</title>
+    <title>Para Natasha ❤️</title>
     <style>
-        /* Estética de Terciopelo y Lujo */
+        /* Fondo de terciopelo rosa y estética de lujo */
         body { 
             margin: 0; 
             overflow: hidden; 
             background: radial-gradient(circle, #fff0f5 0%, #fbc2eb 100%); 
-            font-family: 'Georgia', serif;
+            font-family: 'Times New Roman', serif;
         }
 
-        /* Botón Dorado de Apertura */
-        #btnAbrir {
+        /* Botón central elegante */
+        #btnIniciar {
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            padding: 20px 60px;
+            padding: 20px 50px;
             background: white;
             border: 2px solid #b76e79;
             color: #b76e79;
             font-size: 22px;
-            font-weight: bold;
             cursor: pointer;
             border-radius: 50px;
             box-shadow: 0 10px 30px rgba(183, 110, 121, 0.3);
             z-index: 100;
-            transition: 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: 0.5s;
         }
 
-        #btnAbrir:hover {
+        #btnIniciar:hover {
             background: #b76e79;
             color: white;
             box-shadow: 0 15px 45px rgba(183, 110, 121, 0.5);
-            transform: translate(-50%, -55%) scale(1.05);
         }
 
-        /* Frases que aparecen suavemente */
-        #contenedorFrases {
+        /* Frase final que aparece con la música */
+        #fraseFinal {
             position: absolute;
-            bottom: 15%;
+            bottom: 10%;
             width: 100%;
             text-align: center;
-            z-index: 10;
-            pointer-events: none;
-        }
-
-        .frase {
-            font-size: clamp(24px, 5vw, 40px);
+            font-size: 35px;
             color: #b76e79;
             font-weight: bold;
-            text-shadow: 0 0 15px rgba(255, 255, 255, 0.9);
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.8);
             opacity: 0;
-            transition: opacity 2s ease;
-            position: absolute;
-            width: 100%;
-            left: 0;
+            transition: 3s;
+            z-index: 10;
         }
     </style>
 </head>
 <body>
 
-<button id="btnAbrir">Abrir Nuestro Regalo 💖</button>
-
-<div id="contenedorFrases">
-    <div class="frase" id="f1">Tu sonrisa es mi lugar favorito</div>
-    <div class="frase" id="f2">Gracias por estos días a mi lado</div>
-    <div class="frase" id="f3">Cada nota de esta música es para ti</div>
-    <div class="frase" id="f4">Te amo más de lo que imaginas</div>
-    <div class="frase" id="f5">Feliz Aniversario, Natasha ❤️</div>
-</div>
+<button id="btnIniciar">Abrir mi regalo 💖</button>
+<div id="fraseFinal">Te amo mi gordita preciosa ❤️</div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
 <script>
-    let escena, camara, render, tapaPivote;
+    let escena, camara, render, alhajero, tapaPivote;
     let corazones = [];
-    let audio = new Audio("music.mp3");
-    let clickSound = new Audio("click.mp3");
+    let audio = new Audio("music.mp3"); // Carga tu música de 4 min
     let iniciado = false;
 
-    // Configuración inicial del 3D
     function init() {
         escena = new THREE.Scene();
         camara = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        camara.position.set(0, 45, 140);
+        camara.position.set(0, 40, 150);
 
         render = new THREE.WebGLRenderer({ antialias: true, alpha: true });
         render.setSize(window.innerWidth, window.innerHeight);
         document.body.appendChild(render.domElement);
 
-        // Iluminación suave
-        const luzPuntual = new THREE.PointLight(0xffffff, 1.2, 500);
-        luzPuntual.position.set(50, 100, 80);
-        escena.add(luzPuntual);
-        escena.add(new THREE.AmbientLight(0xfff0f5, 0.7));
+        // Luces cálidas para efecto joya
+        const luzSol = new THREE.DirectionalLight(0xffffff, 1);
+        luzSol.position.set(5, 10, 7.5);
+        escena.add(luzSol);
+        escena.add(new THREE.AmbientLight(0xfff0f5, 0.8));
 
-        // Materiales Lujosos
-        const matOroRosa = new THREE.MeshStandardMaterial({ 
-            color: 0xb76e79, metalness: 0.9, roughness: 0.1 
+        // 1. Crear Alhajero (Base y Tapa)
+        const materialOroRosa = new THREE.MeshStandardMaterial({ 
+            color: 0xb76e79, metalness: 0.8, roughness: 0.2 
         });
-        const matNacar = new THREE.MeshStandardMaterial({ 
-            color: 0xfffafa, roughness: 0.2, emissive: 0xfff0f5, emissiveIntensity: 0.1
+        const materialNacar = new THREE.MeshStandardMaterial({ 
+            color: 0xfffafa, roughness: 0.1 
         });
 
-        // 1. El Alhajero
-        // Base de Nácar
-        const base = new THREE.Mesh(new THREE.CylinderGeometry(55, 60, 25, 32), matNacar);
+        // Base
+        const baseGeo = new THREE.CylinderGeometry(50, 55, 20, 32);
+        const base = new THREE.Mesh(baseGeo, materialNacar);
         escena.add(base);
 
-        // Tapa con Pivote
+        // Tapa con Pivote para abrir
         tapaPivote = new THREE.Group();
-        tapaPivote.position.set(0, 12, -55); 
-        const tapa = new THREE.Mesh(new THREE.CylinderGeometry(60, 60, 6, 32), matOroRosa);
-        tapa.position.set(0, 3, 55);
+        tapaPivote.position.set(0, 10, -50); 
+        const tapaGeo = new THREE.CylinderGeometry(55, 55, 5, 32);
+        const tapa = new THREE.Mesh(tapaGeo, materialOroRosa);
+        tapa.position.set(0, 2.5, 50);
         tapaPivote.add(tapa);
         escena.add(tapaPivote);
 
-        // 2. Corazones Grabados (Geometría personalizada)
-        const forma = new THREE.Shape();
-        forma.moveTo(0, 0);
-        forma.bezierCurveTo(0, 0, -5, 10, 0, 18);
-        forma.bezierCurveTo(5, 25, 20, 15, 20, 15);
-        forma.bezierCurveTo(20, 15, 35, 25, 40, 18);
-        forma.bezierCurveTo(45, 10, 40, 0, 40, 0);
-        forma.bezierCurveTo(40, 0, 40, -15, 20, -25);
-        forma.bezierCurveTo(0, -15, 0, 0, 0, 0);
+        // 2. Crear Corazones Flotantes
+        const formaCorazon = new THREE.Shape();
+        formaCorazon.moveTo(0, 0);
+        formaCorazon.bezierCurveTo(0, 0, -5, 10, 0, 18);
+        formaCorazon.bezierCurveTo(5, 25, 20, 15, 20, 15);
+        formaCorazon.bezierCurveTo(20, 15, 35, 25, 40, 18);
+        formaCorazon.bezierCurveTo(45, 10, 40, 0, 40, 0);
+        formaCorazon.bezierCurveTo(40, 0, 40, -15, 20, -25);
+        formaCorazon.bezierCurveTo(0, -15, 0, 0, 0, 0);
 
-        const geoCorazon = new THREE.ExtrudeGeometry(forma, { depth: 2, bevelEnabled: true, bevelSize: 1 });
+        const geoCorazon = new THREE.ExtrudeGeometry(formaCorazon, { depth: 2, bevelEnabled: true, bevelSize: 1 });
         
         for(let i=0; i<5; i++) {
-            let corazon = new THREE.Mesh(geoCorazon, matOroRosa);
-            corazon.scale.set(0.7, 0.7, 0.7);
-            corazon.rotation.x = Math.PI;
-            corazon.position.set((i - 2) * 35, 15, (Math.random() - 0.5) * 15);
-            escena.add(corazon);
-            corazones.push(corazon);
+            let c = new THREE.Mesh(geoCorazon, materialOroRosa);
+            c.scale.set(0.8, 0.8, 0.8);
+            c.rotation.x = Math.PI;
+            c.position.set((i - 2) * 30, 10, (Math.random() - 0.5) * 20);
+            escena.add(c);
+            corazones.push(c);
         }
 
         animate();
     }
 
-    // Acción al abrir
-    function comenzar() {
-        if(iniciado) return;
+    function iniciar() {
+        audio.play().catch(e => console.log("Error al reproducir audio"));
+        document.getElementById("btnIniciar").style.display = "none";
+        document.getElementById("fraseFinal").style.opacity = "1";
         iniciado = true;
-
-        clickSound.play().catch(() => {});
-        audio.play().catch(() => alert("Por favor, asegúrate de tener music.mp3 en la carpeta"));
-
-        document.getElementById("btnAbrir").style.display = "none";
-        
-        // Ciclo de frases durante los 4 minutos
-        mostrarFrases();
-    }
-
-    function mostrarFrases() {
-        const ids = ['f1', 'f2', 'f3', 'f4', 'f5'];
-        let delay = 3000;
-        ids.forEach((id, index) => {
-            setTimeout(() => {
-                // Ocultar la anterior
-                if(index > 0) document.getElementById(ids[index-1]).style.opacity = "0";
-                // Mostrar la actual
-                document.getElementById(id).style.opacity = "1";
-            }, delay);
-            delay += 6000; // Cada frase dura 6 segundos
-        });
     }
 
     function animate() {
         requestAnimationFrame(animate);
-        let t = Date.now() * 0.002;
+        let time = Date.now() * 0.002;
 
         if (iniciado) {
-            // Abrir tapa suavemente
-            if (tapaPivote.rotation.x > -Math.PI * 0.75) {
-                tapaPivote.rotation.x -= 0.015;
+            // Abrir tapa lentamente
+            if (tapaPivote.rotation.x > -Math.PI * 0.7) {
+                tapaPivote.rotation.x -= 0.02;
             }
 
-            // Corazones flotando con la música
+            // Movimiento de corazones "bailando" con la música
             corazones.forEach((c, i) => {
-                c.position.y = 15 + Math.sin(t + i) * 8;
+                c.position.y = 15 + Math.sin(time + i) * 10;
                 c.rotation.y += 0.01;
-                c.rotation.z = Math.sin(t * 0.5) * 0.1;
             });
         }
 
         render.render(escena, camara);
     }
 
-    document.getElementById("btnAbrir").addEventListener("click", comenzar);
+    document.getElementById("btnIniciar").addEventListener("click", iniciar);
     window.onload = init;
-
-    // Ajuste de pantalla
-    window.addEventListener('resize', () => {
-        camara.aspect = window.innerWidth / window.innerHeight;
-        camara.updateProjectionMatrix();
-        render.setSize(window.innerWidth, window.innerHeight);
-    });
 </script>
 
 </body>
