@@ -2,341 +2,206 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Aniversario - Natasha</title>
     <style>
-        /* =========================================
-           1. ESTILOS VISUALES (CSS)
-           =========================================
-        */
+        /* Estética de Terciopelo y Lujo */
         body { 
             margin: 0; 
             overflow: hidden; 
-            background: radial-gradient(circle at center, #2c010c 0%, #000000 100%); /* Fondo profundo y lujoso */
-            font-family: 'Georgia', serif; 
-            color: #d4af37; /* Dorado metálico */
-            cursor: default; 
+            background: radial-gradient(circle, #fff0f5 0%, #fbc2eb 100%); 
+            font-family: 'Georgia', serif;
         }
 
-        /* Título superior sutil */
-        #tituloSuperior { 
-            position: absolute; 
-            top: 40px; 
-            width: 100%; 
-            text-align: center; 
-            font-size: clamp(20px, 4vw, 28px); 
-            letter-spacing: 3px;
-            font-weight: 300;
-            color: rgba(212, 175, 55, 0.6); /* Oro suave */
-            text-shadow: 0 0 10px rgba(212, 175, 55, 0.4); 
-            z-index: 10; 
-            pointer-events: none; 
-        }
-
-        /* Botón de reproducción: El marcapáginas dorado */
-        #musicBtn { 
-            position: absolute; 
-            bottom: 60px; 
-            left: 50%; 
-            transform: translateX(-50%); 
-            padding: 15px 35px; 
-            border: 2px solid #d4af37; 
-            border-radius: 50px; 
-            background: linear-gradient(135deg, #440a1a 0%, #000000 100%); 
-            color: #ffd700; 
-            font-size: 20px; 
+        /* Botón Dorado de Apertura */
+        #btnAbrir {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 20px 60px;
+            background: white;
+            border: 2px solid #b76e79;
+            color: #b76e79;
+            font-size: 22px;
             font-weight: bold;
-            cursor: pointer; 
-            box-shadow: 0 0 30px rgba(212, 175, 55, 0.5); 
-            z-index: 100; 
-            transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
-            backdrop-filter: blur(5px);
-        }
-
-        #musicBtn:hover { 
-            transform: translateX(-50%) scale(1.1); 
-            box-shadow: 0 0 50px rgba(255, 215, 0, 0.8); 
-            background: #ff4d6d;
-            color: white;
-            border-color: #ff4d6d;
-        }
-
-        /* Texto de invitación al viaje */
-        #textoBoton {
-            position: absolute;
-            bottom: 25px;
-            width: 100%;
-            text-align: center;
-            font-size: clamp(16px, 3vw, 20px);
-            color: rgba(255, 255, 255, 0.7);
-            font-style: italic;
-            pointer-events: none;
+            cursor: pointer;
+            border-radius: 50px;
+            box-shadow: 0 10px 30px rgba(183, 110, 121, 0.3);
             z-index: 100;
+            transition: 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
-        /* Mensaje final que aparece en la última página */
-        #mensajeFinal {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            display: none; /* Empieza oculto */
-            z-index: 2000;
-            justify-content: center;
-            align-items: center;
+        #btnAbrir:hover {
+            background: #b76e79;
             color: white;
+            box-shadow: 0 15px 45px rgba(183, 110, 121, 0.5);
+            transform: translate(-50%, -55%) scale(1.05);
+        }
+
+        /* Frases que aparecen suavemente */
+        #contenedorFrases {
+            position: absolute;
+            bottom: 15%;
+            width: 100%;
             text-align: center;
+            z-index: 10;
+            pointer-events: none;
+        }
+
+        .frase {
+            font-size: clamp(24px, 5vw, 40px);
+            color: #b76e79;
+            font-weight: bold;
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.9);
             opacity: 0;
             transition: opacity 2s ease;
+            position: absolute;
+            width: 100%;
+            left: 0;
         }
-
-        /* La tarjeta del mensaje final */
-        .cardFinal {
-            background: linear-gradient(135deg, #2c010c 0%, #160106 100%);
-            padding: 50px;
-            border-radius: 20px;
-            border: 3px solid #d4af37;
-            box-shadow: 0 0 60px #ff4d6d;
-            max-width: 80%;
-            font-size: clamp(24px, 5vw, 36px);
-            line-height: 1.6;
-            color: #ffd700;
-            text-shadow: 0 0 15px #ff4d6d;
-        }
-
     </style>
 </head>
 <body>
 
-<div id="tituloSuperior">Aniversario - Natasha</div>
+<button id="btnAbrir">Abrir Nuestro Regalo 💖</button>
 
-<div id="mensajeFinal">
-    <div class="cardFinal">
-        Gracias por escribir esta historia conmigo.<br><br>
-        <strong style="color: white; text-shadow: 0 0 20px white;">Te amo mi gordita preciosa ❤️</strong>
-    </div>
+<div id="contenedorFrases">
+    <div class="frase" id="f1">Tu sonrisa es mi lugar favorito</div>
+    <div class="frase" id="f2">Gracias por estos días a mi lado</div>
+    <div class="frase" id="f3">Cada nota de esta música es para ti</div>
+    <div class="frase" id="f4">Te amo más de lo que imaginas</div>
+    <div class="frase" id="f5">Feliz Aniversario, Natasha ❤️</div>
 </div>
-
-<button id="musicBtn">Empezar Nuestro Viaje 💖</button>
-<div id="textoBoton">Un recorrido por nuestros recuerdos</div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
 <script>
-/**
- * =========================================
- * 2. LÓGICA DEL LIBRO 3D (JAVASCRIPT)
- * =========================================
- */
+    let escena, camara, render, tapaPivote;
+    let corazones = [];
+    let audio = new Audio("music.mp3");
+    let clickSound = new Audio("click.mp3");
+    let iniciado = false;
 
-// --- Variables de Estado y Configuración ---
-let despierto = false;
-let t = 0;
-let audio, clickSound;
+    // Configuración inicial del 3D
+    function init() {
+        escena = new THREE.Scene();
+        camara = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camara.position.set(0, 45, 140);
 
-// --- Configuración Core de Three.js ---
-const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 5000);
-// Vista de primer plano, íntima y cercana
-camera.position.set(0, 0, 500); 
+        render = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+        render.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(render.domElement);
 
-const renderer = new THREE.WebGLRenderer({ antialias: true });
-renderer.setPixelRatio(window.devicePixelRatio);
-renderer.setSize(window.innerWidth, window.innerHeight);
-document.body.appendChild(renderer.domElement);
+        // Iluminación suave
+        const luzPuntual = new THREE.PointLight(0xffffff, 1.2, 500);
+        luzPuntual.position.set(50, 100, 80);
+        escena.add(luzPuntual);
+        escena.add(new THREE.AmbientLight(0xfff0f5, 0.7));
 
-// --- 1. Creación del Libro de Terciopelo y Nácar ---
-const libro = new THREE.Group();
-const loader = new THREE.TextureLoader();
-
-// A. La Portada: Terciopelo Rosa Pastel
-const coverGeometry = new THREE.BoxGeometry(200, 260, 10);
-const coverMaterial = new THREE.MeshStandardMaterial({ 
-    color: 0xffb7c5, // Rosa pastel terciopelo
-    roughness: 0.9, 
-    metalness: 0.1 
-});
-const cover = new THREE.Mesh(coverGeometry, coverMaterial);
-cover.position.set(100, 0, 0); // Pivote en el lomo
-libro.add(cover);
-
-// B. El Lomo: Oro Rosa con Filigrana
-const spineGeometry = new THREE.CylinderGeometry(15, 15, 260, 32, 1, true, Math.PI, Math.PI);
-const spineMaterial = new THREE.MeshStandardMaterial({ 
-    color: 0xd4af37, // Oro rosa base
-    metalness: 0.9, 
-    roughness: 0.2, 
-    side: THREE.DoubleSide 
-});
-const spine = new THREE.Mesh(spineGeometry, spineMaterial);
-spine.position.set(0, 0, 0);
-libro.add(spine);
-
-// C. Las Páginas: Nácar Iridiscente
-const pagesGeometry = new THREE.BoxGeometry(195, 255, 8);
-const pagesMaterial = new THREE.MeshStandardMaterial({ 
-    color: 0xfffafa, // Nácar base
-    roughness: 0.2, 
-    metalness: 0.1,
-    transparent: true,
-    opacity: 0.95
-});
-const pages = new THREE.Mesh(pagesGeometry, pagesMaterial);
-pages.position.set(100, 0, -5); // Un poco atrás de la portada
-libro.add(pages);
-
-scene.add(libro);
-
-// --- 2. Los Grabados de los Corazones (Nácar y Oro Rosa) ---
-const hearts = [];
-const heartShape = new THREE.Shape();
-heartShape.moveTo( 5, 5 );
-heartShape.bezierCurveTo( 5, 5, 4, 0, 0, 0 );
-heartShape.bezierCurveTo( -6, 0, -6, 7, -6, 7 );
-heartShape.bezierCurveTo( -6, 11, -3, 15.4, 5, 19 );
-heartShape.bezierCurveTo( 12, 15.4, 16, 11, 16, 7 );
-heartShape.bezierCurveTo( 16, 7, 16, 0, 10, 0 );
-heartShape.bezierCurveTo( 7, 0, 5, 5, 5, 5 );
-
-const heartGeo = new THREE.ExtrudeGeometry(heartShape, { depth: 2, bevelEnabled: true, bevelSize: 0.5 });
-const heartMat = new THREE.MeshStandardMaterial({ 
-    color: 0xd4af37, // Oro rosa grabado
-    emissive: 0xff0044, // Brillo de nácar iridiscente
-    emissiveIntensity: 0.3,
-    metalness: 0.8,
-    roughness: 0.2
-});
-
-// Colocamos los corazones dentro del libro (en las páginas)
-const posCorazones = [
-    {x: 60, y: 80}, {x: 140, y: 80},
-    {x: 40, y: 0}, {x: 100, y: 0}, {x: 160, y: 0},
-    {x: 60, y: -80}, {x: 140, y: -80}
-];
-
-posCorazones.forEach(pos => {
-    const mesh = new THREE.Mesh(heartGeo, heartMat);
-    mesh.rotation.z = Math.PI; // Voltear
-    mesh.scale.set(1.5, 1.5, 1.5);
-    mesh.position.set(pos.x, pos.y, -3); // Justo sobre la página de nácar
-    libro.add(mesh);
-    hearts.push(mesh);
-});
-
-// --- 3. Iluminación y Efectos ---
-// Luz puntual cálida (como de una vela) para resaltar el terciopelo y el nácar
-const light = new THREE.PointLight(0xfff8e1, 2, 1000);
-light.position.set(100, 100, 300);
-scene.add(light);
-
-// Luz ambiental suave para no perder detalles
-scene.add(new THREE.AmbientLight(0x404040, 1.5));
-
-// Raycaster para la interacción de clics (no 3D, pero para el control)
-const ray = new THREE.Raycaster();
-const mouse = new THREE.Vector2();
-
-/**
- * --- Gestión de Eventos y Audio ---
- */
-
-document.getElementById("musicBtn").onclick = function() {
-    // Si la música ya está sonando, no hacemos nada más
-    if(audio) return;
-
-    // Inicializar el audio de fondo y el sonido de clic
-    audio = new Audio("music.mp3"); 
-    audio.loop = true;
-    clickSound = new Audio("click.mp3");
-
-    // Iniciar la música
-    audio.play();
-
-    // Efectos visuales de inicio
-    this.style.opacity = "0";
-    document.getElementById("textoBoton").style.opacity = "0";
-    setTimeout(() => {
-        this.style.display = "none";
-        document.getElementById("textoBoton").style.display = "none";
-    }, 1000);
-
-    // Activamos la animación
-    despierto = true;
-};
-
-// Controlar el clic final en el corazón
-window.addEventListener('click', (e) => {
-    // Solo si el libro está abierto y hemos llegado al final
-    if(despierto && libro.rotation.y > Math.PI * 0.4) {
-        mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
-        mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
-        ray.setFromCamera(mouse, camera);
-        
-        // Intersección con los corazones grabados
-        const intersects = ray.intersectObjects(hearts);
-        if(intersects.length > 0) {
-            clickSound.currentTime = 0;
-            clickSound.play();
-            mostrarMensajeFinal();
-        }
-    }
-});
-
-function mostrarMensajeFinal() {
-    const msg = document.getElementById("mensajeFinal");
-    msg.style.display = "flex";
-    setTimeout(() => msg.style.opacity = "1", 100);
-}
-
-/**
- * --- Bucle de Animación (60 FPS) ---
- */
-function animate() {
-    requestAnimationFrame(animate);
-    
-    // Si la música no ha empezado, el libro está quieto
-    if(despierto) {
-        t += 0.005;
-        
-        // Movimiento de deriva suave para que flote en el terciopelo del fondo
-        libro.position.y = Math.sin(t) * 15;
-        libro.position.x = Math.cos(t * 0.7) * 10;
-        
-        // --- 1. Apertura Cinemática del Libro ---
-        // Se abre lentamente hasta quedar en ángulo
-        if(libro.rotation.y < Math.PI * 0.45) {
-            libro.rotation.y += 0.003;
-        }
-
-        // --- 2. Animación de los Grabados de Corazones ---
-        // Brillo iridiscente de nácar que pulsa
-        const iridiscencia = 0.3 + Math.sin(t * 2) * 0.1;
-        heartMat.emissiveIntensity = iridiscencia;
-        
-        // Pequeño balanceo individual como si bailaran con la música
-        hearts.forEach((h, i) => {
-            h.rotation.y = Math.sin(t + i) * 0.05;
+        // Materiales Lujosos
+        const matOroRosa = new THREE.MeshStandardMaterial({ 
+            color: 0xb76e79, metalness: 0.9, roughness: 0.1 
+        });
+        const matNacar = new THREE.MeshStandardMaterial({ 
+            color: 0xfffafa, roughness: 0.2, emissive: 0xfff0f5, emissiveIntensity: 0.1
         });
 
-        // La cámara se acerca sutilmente para la lectura
-        if(camera.position.z > 400) camera.position.z -= 0.2;
+        // 1. El Alhajero
+        // Base de Nácar
+        const base = new THREE.Mesh(new THREE.CylinderGeometry(55, 60, 25, 32), matNacar);
+        escena.add(base);
+
+        // Tapa con Pivote
+        tapaPivote = new THREE.Group();
+        tapaPivote.position.set(0, 12, -55); 
+        const tapa = new THREE.Mesh(new THREE.CylinderGeometry(60, 60, 6, 32), matOroRosa);
+        tapa.position.set(0, 3, 55);
+        tapaPivote.add(tapa);
+        escena.add(tapaPivote);
+
+        // 2. Corazones Grabados (Geometría personalizada)
+        const forma = new THREE.Shape();
+        forma.moveTo(0, 0);
+        forma.bezierCurveTo(0, 0, -5, 10, 0, 18);
+        forma.bezierCurveTo(5, 25, 20, 15, 20, 15);
+        forma.bezierCurveTo(20, 15, 35, 25, 40, 18);
+        forma.bezierCurveTo(45, 10, 40, 0, 40, 0);
+        forma.bezierCurveTo(40, 0, 40, -15, 20, -25);
+        forma.bezierCurveTo(0, -15, 0, 0, 0, 0);
+
+        const geoCorazon = new THREE.ExtrudeGeometry(forma, { depth: 2, bevelEnabled: true, bevelSize: 1 });
+        
+        for(let i=0; i<5; i++) {
+            let corazon = new THREE.Mesh(geoCorazon, matOroRosa);
+            corazon.scale.set(0.7, 0.7, 0.7);
+            corazon.rotation.x = Math.PI;
+            corazon.position.set((i - 2) * 35, 15, (Math.random() - 0.5) * 15);
+            escena.add(corazon);
+            corazones.push(corazon);
+        }
+
+        animate();
     }
 
-    renderer.render(scene, camera);
-}
+    // Acción al abrir
+    function comenzar() {
+        if(iniciado) return;
+        iniciado = true;
 
-// Controlar el redimensionado de la ventana
-window.addEventListener('resize', () => {
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
-    renderer.setSize(window.innerWidth, window.innerHeight);
-});
+        clickSound.play().catch(() => {});
+        audio.play().catch(() => alert("Por favor, asegúrate de tener music.mp3 en la carpeta"));
 
-// Iniciar animación
-animate();
+        document.getElementById("btnAbrir").style.display = "none";
+        
+        // Ciclo de frases durante los 4 minutos
+        mostrarFrases();
+    }
 
+    function mostrarFrases() {
+        const ids = ['f1', 'f2', 'f3', 'f4', 'f5'];
+        let delay = 3000;
+        ids.forEach((id, index) => {
+            setTimeout(() => {
+                // Ocultar la anterior
+                if(index > 0) document.getElementById(ids[index-1]).style.opacity = "0";
+                // Mostrar la actual
+                document.getElementById(id).style.opacity = "1";
+            }, delay);
+            delay += 6000; // Cada frase dura 6 segundos
+        });
+    }
+
+    function animate() {
+        requestAnimationFrame(animate);
+        let t = Date.now() * 0.002;
+
+        if (iniciado) {
+            // Abrir tapa suavemente
+            if (tapaPivote.rotation.x > -Math.PI * 0.75) {
+                tapaPivote.rotation.x -= 0.015;
+            }
+
+            // Corazones flotando con la música
+            corazones.forEach((c, i) => {
+                c.position.y = 15 + Math.sin(t + i) * 8;
+                c.rotation.y += 0.01;
+                c.rotation.z = Math.sin(t * 0.5) * 0.1;
+            });
+        }
+
+        render.render(escena, camara);
+    }
+
+    document.getElementById("btnAbrir").addEventListener("click", comenzar);
+    window.onload = init;
+
+    // Ajuste de pantalla
+    window.addEventListener('resize', () => {
+        camara.aspect = window.innerWidth / window.innerHeight;
+        camara.updateProjectionMatrix();
+        render.setSize(window.innerWidth, window.innerHeight);
+    });
 </script>
+
 </body>
 </html>
