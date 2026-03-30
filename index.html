@@ -3,32 +3,41 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>Henry ❤️ Natasha</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Short+Stack&family=Gaegu:wght@700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Short+Stack&display=swap" rel="stylesheet">
 
 <style>
 body{
     margin:0;
     overflow:hidden;
     font-family:'Short Stack', cursive;
-    background:radial-gradient(circle,#ff4d88,#1a1a2e);
     height:100vh;
+    background: linear-gradient(-45deg, #ff4d88, #ff1744, #1a1a2e, #0f2027);
+    background-size:400% 400%;
+    animation:bgMove 10s ease infinite;
 }
 
-/* 🌌 estrellas */
+@keyframes bgMove{
+    0%{background-position:0%}
+    50%{background-position:100%}
+    100%{background-position:0%}
+}
+
+/* 🌧️ estrellas lluvia */
 .star{
     position:fixed;
-    width:2px;
-    height:2px;
-    background:white;
     border-radius:50%;
-    animation:twinkle 2s infinite alternate;
+    pointer-events:none;
+    animation:fall linear forwards, twinkle 2s infinite alternate;
+}
+
+@keyframes fall{
+    to{transform:translateY(110vh);}
 }
 
 @keyframes twinkle{
-    from{opacity:.2;}
+    from{opacity:.3;}
     to{opacity:1; transform:scale(1.5);}
 }
 
@@ -47,46 +56,41 @@ body{
     overflow:hidden;
 }
 
-/* botón */
-button{
-    padding:15px 40px;
-    border:none;
-    border-radius:50px;
-    background:#ff1744;
-    color:white;
-    font-size:18px;
-    cursor:pointer;
-}
-
-/* corazones */
+/* ❤️ corazones */
 .heart{
     position:absolute;
     font-size:42px;
     cursor:pointer;
     animation:float 2s infinite alternate;
+    filter: drop-shadow(0 0 10px #ff4d88)
+            drop-shadow(0 0 20px #ff1744);
 }
 
 @keyframes float{
     to{transform:translateY(-20px);}
 }
 
-/* partículas */
+/* 💥 partículas */
 .particle{
     position:absolute;
+    font-size:14px;
+    pointer-events:none;
     animation:explode 1s forwards;
 }
 
 @keyframes explode{
     to{
-        transform:translate(var(--x),var(--y));
+        transform:translate(var(--x),var(--y)) scale(1.5);
         opacity:0;
     }
 }
 
-/* texto */
+/* 💬 frases */
 .text{
     position:absolute;
-    color:white;
+    font-weight:bold;
+    color:#fff;
+    text-shadow:0 0 10px #ff1744;
     animation:up 1s forwards;
 }
 
@@ -94,49 +98,52 @@ button{
     to{transform:translateY(-60px); opacity:0;}
 }
 
-/* 🌳 árbol */
-#tree{
-    position:absolute;
-    width:100%;
-    height:100%;
-    display:none;
-}
-
-/* flores */
-.flower{
-    position:absolute;
-    width:6px;
-    height:6px;
-    background:#ffd54f;
-    border-radius:50%;
-    box-shadow:0 0 10px #ffeb3b;
-    opacity:0;
-    animation:grow 2s forwards;
-}
-
-@keyframes grow{
-    to{opacity:1; transform:scale(1.5);}
-}
-
-/* 💌 final */
+/* 💌 carta */
 #final{
     position:absolute;
     top:50%;
     left:50%;
-    transform:translate(-50%,-50%);
+    transform:translate(-50%,-40%) scale(0.8);
     width:90%;
     max-width:400px;
-    background:white;
+    background: rgba(255,255,255,0.9);
+    backdrop-filter: blur(15px);
     padding:20px;
     border-radius:20px;
     display:none;
-    box-shadow:0 10px 40px rgba(0,0,0,.4);
+    opacity:0;
+    transition: all 2s ease;
+}
+
+#final.show{
+    transform: translate(-50%,-50%) scale(1);
+    opacity:1;
 }
 
 .names{
     text-align:center;
     font-size:2rem;
     color:#ff1744;
+}
+
+/* ❤️ efecto final */
+.love{
+    color:#ff1744;
+    display:block;
+    text-align:center;
+    font-size:1.3em;
+    animation:glow 2s infinite alternate;
+}
+
+@keyframes glow{
+    from{text-shadow:0 0 10px #ff1744;}
+    to{text-shadow:0 0 25px #ff4d88;}
+}
+
+/* 🎬 modo cine */
+body.cinematic{
+    filter: brightness(0.4);
+    transition: 2s ease;
 }
 </style>
 </head>
@@ -154,8 +161,6 @@ button{
 </div>
 </div>
 
-<div id="tree"></div>
-
 <div id="final">
 <div class="names">Henry ❤️ Natasha</div>
 <p>
@@ -172,7 +177,7 @@ y por ser tan tú.<br><br>
 No necesito que sea perfecto,<br>
 mientras sea solo nosotros.<br><br>
 
-<b style="color:#ff1744">
+<b class="love">
 Te amo muchísimo mi gordita hermosa ❤️
 </b>
 </p>
@@ -181,28 +186,48 @@ Te amo muchísimo mi gordita hermosa ❤️
 <script>
 const game=document.getElementById("game");
 const music=document.getElementById("music");
-const tree=document.getElementById("tree");
 
 let score=0;
 
-/* estrellas */
-for(let i=0;i<100;i++){
-let s=document.createElement("div");
-s.className="star";
-s.style.left=Math.random()*100+"vw";
-s.style.top=Math.random()*100+"vh";
-document.body.appendChild(s);
-}
+const frases=[
+"divina 💖",
+"mi princesa 👑",
+"eres mía ❤️",
+"te adoro 😘",
+"mi todo 💕"
+];
 
+/* 🌧️ lluvia estrellas */
+setInterval(()=>{
+    let s=document.createElement("div");
+    s.className="star";
+
+    let size=Math.random()*3+1;
+    s.style.width=size+"px";
+    s.style.height=size+"px";
+
+    s.style.left=Math.random()*100+"vw";
+    s.style.top="-10px";
+
+    s.style.background=Math.random()>0.5?"#fff":"#ff4d88";
+    s.style.animationDuration=(Math.random()*3+2)+"s";
+
+    document.body.appendChild(s);
+    setTimeout(()=>s.remove(),5000);
+},80);
+
+/* 🎮 iniciar */
 function startGame(){
 document.getElementById("start").remove();
+music.volume=1;
 music.play();
 spawn();
 }
 
+/* ❤️ generar corazones */
 function spawn(){
 if(score>=10){
-showTree();
+showFinal();
 return;
 }
 
@@ -219,17 +244,16 @@ h.style.top=y+"px";
 h.onclick=()=>{
 score++;
 
-for(let i=0;i<15;i++){
-let p=document.createElement("div");
-p.className="particle";
-p.innerHTML="💖";
-p.style.left=x+"px";
-p.style.top=y+"px";
-p.style.setProperty('--x',(Math.random()*100-50)+"px");
-p.style.setProperty('--y',(Math.random()*100-50)+"px");
-game.appendChild(p);
-setTimeout(()=>p.remove(),1000);
-}
+explodeParticles(x,y);
+
+let t=document.createElement("div");
+t.className="text";
+t.innerText=frases[Math.floor(Math.random()*frases.length)];
+t.style.left=x+"px";
+t.style.top=y+"px";
+game.appendChild(t);
+
+setTimeout(()=>t.remove(),1000);
 
 h.remove();
 spawn();
@@ -238,34 +262,57 @@ spawn();
 game.appendChild(h);
 }
 
-/* 🌳 árbol */
-function showTree(){
-game.style.display="none";
-tree.style.display="block";
+/* 💥 partículas */
+function explodeParticles(x,y){
+const icons=["💖","✨","❤️"];
 
-let centerX=window.innerWidth/2;
-let baseY=window.innerHeight/1.5;
+for(let i=0;i<25;i++){
+let p=document.createElement("div");
+p.className="particle";
+p.innerHTML=icons[Math.floor(Math.random()*icons.length)];
 
-for(let i=0;i<150;i++){
-let f=document.createElement("div");
-f.className="flower";
+p.style.left=x+"px";
+p.style.top=y+"px";
 
-let angle=Math.random()*Math.PI;
-let radius=Math.random()*120;
+p.style.setProperty('--x',(Math.random()*200-100)+"px");
+p.style.setProperty('--y',(Math.random()*200-100)+"px");
 
-let x=centerX+Math.cos(angle)*radius;
-let y=baseY-Math.sin(angle)*radius;
-
-f.style.left=x+"px";
-f.style.top=y+"px";
-f.style.animationDelay=i*0.02+"s";
-
-tree.appendChild(f);
+game.appendChild(p);
+setTimeout(()=>p.remove(),1000);
+}
 }
 
+/* 🎬 fade música */
+function fadeOutMusic(){
+let vol=music.volume;
+
+let fade=setInterval(()=>{
+if(vol>0.05){
+vol-=0.05;
+music.volume=vol;
+}else{
+music.volume=0;
+clearInterval(fade);
+}
+},200);
+}
+
+/* 💌 final cinematográfico */
+function showFinal(){
+
+fadeOutMusic();
+
+document.body.classList.add("cinematic");
+
 setTimeout(()=>{
-document.getElementById("final").style.display="block";
-},4000);
+let final=document.getElementById("final");
+final.style.display="block";
+
+setTimeout(()=>{
+final.classList.add("show");
+},200);
+
+},1500);
 }
 </script>
 
