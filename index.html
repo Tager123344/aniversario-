@@ -10,121 +10,146 @@
 <style>
 :root{
     --rojo:#ff1744;
-    --rosa:#ff6b81;
-    --negro:#1a1a1a;
+    --rosa:#ff4d88;
 }
 
-/* 🌌 FONDO CON ESTRELLAS */
+/* 🌈 FONDO ANIMADO */
 body{
     margin:0;
+    height:100vh;
     overflow:hidden;
     font-family:'Short Stack', cursive;
-    height:100vh;
     display:flex;
     flex-direction:column;
     align-items:center;
-    background: radial-gradient(circle at top, #1a1a2e, #0f0f1a);
+    background:linear-gradient(-45deg,#ff4d88,#ff1744,#ff8a80,#ffd1dc);
+    background-size:400% 400%;
+    animation:bg 8s ease infinite;
 }
 
-/* estrellas */
+@keyframes bg{
+    0%{background-position:0%}
+    50%{background-position:100%}
+    100%{background-position:0%}
+}
+
+/* ✨ ESTRELLAS */
 .star{
     position:fixed;
-    width:2px;
-    height:2px;
+    width:3px;
+    height:3px;
     background:white;
     border-radius:50%;
-    opacity:0.3;
     animation:twinkle 2s infinite alternate;
 }
 
 @keyframes twinkle{
-    from{opacity:0.2; transform:scale(1);}
-    to{opacity:1; transform:scale(1.8);}
+    from{opacity:.2; transform:scale(1);}
+    to{opacity:1; transform:scale(2);}
 }
 
-/* HEADER */
-.header{
-    background:white;
-    width:100%;
-    text-align:center;
-    padding:15px;
-    border-bottom:5px solid var(--negro);
-    z-index:10;
-}
-
-/* GAME */
+/* CONTENEDOR */
 #game{
-    position:relative;
+    margin-top:30px;
     width:90%;
     max-width:500px;
-    height:400px;
-    background:white;
+    height:420px;
     border-radius:25px;
-    border:5px solid var(--negro);
-    margin-top:20px;
+    backdrop-filter:blur(10px);
+    background:rgba(255,255,255,.2);
+    border:2px solid rgba(255,255,255,.3);
+    position:relative;
     overflow:hidden;
 }
 
-/* CORAZONES */
+/* BOTÓN */
+button{
+    padding:15px 40px;
+    border:none;
+    border-radius:50px;
+    background:var(--rojo);
+    color:white;
+    font-size:18px;
+    cursor:pointer;
+    box-shadow:0 0 20px rgba(255,0,80,.6);
+}
+
+/* ❤️ CORAZONES */
 .heart{
     position:absolute;
     font-size:40px;
     cursor:pointer;
-    animation:float 2s infinite alternate;
+    animation:float 2s infinite alternate ease-in-out;
 }
 
 @keyframes float{
-    from{transform:translateY(0);}
-    to{transform:translateY(-10px);}
+    from{transform:translateY(0)}
+    to{transform:translateY(-20px)}
 }
 
-/* FRASES */
-.text{
-    position:absolute;
-    color:var(--rojo);
-    font-weight:bold;
-    animation:fadeUp 1s forwards;
-}
-
-@keyframes fadeUp{
-    to{transform:translateY(-60px); opacity:0;}
-}
-
-/* PARTICULAS */
+/* 💥 PARTÍCULAS */
 .particle{
     position:absolute;
-    font-size:10px;
-    pointer-events:none;
-    animation:particle 1s forwards;
+    font-size:14px;
+    animation:explode 1s forwards;
 }
 
-@keyframes particle{
+@keyframes explode{
     to{
-        transform:translate(var(--x), var(--y));
+        transform:translate(var(--x),var(--y)) scale(1.5);
         opacity:0;
     }
 }
 
-/* FINAL */
+/* 💬 FRASES */
+.text{
+    position:absolute;
+    font-weight:bold;
+    color:white;
+    text-shadow:0 0 10px #ff1744;
+    animation:up 1s forwards;
+}
+
+@keyframes up{
+    to{transform:translateY(-60px); opacity:0;}
+}
+
+/* 💌 MODAL FINAL */
 #final{
     display:none;
+    position:fixed;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    width:90%;
+    max-width:400px;
+    max-height:70vh;
     background:white;
-    padding:25px;
     border-radius:20px;
-    border:5px solid var(--negro);
-    max-width:500px;
-    margin-top:20px;
-    animation:pop .8s;
+    padding:20px;
+    box-shadow:0 10px 40px rgba(0,0,0,.3);
+    overflow:auto;
+    animation:pop .5s;
 }
 
 @keyframes pop{
-    from{transform:scale(0);}
-    to{transform:scale(1);}
+    from{transform:translate(-50%,-50%) scale(0);}
+    to{transform:translate(-50%,-50%) scale(1);}
 }
 
+/* cerrar */
+.close{
+    position:absolute;
+    top:10px;
+    right:15px;
+    cursor:pointer;
+    font-size:20px;
+}
+
+/* TEXTO */
 .msg{
     line-height:1.6;
-    font-size:1.2rem;
+    color:#333;
 }
 </style>
 </head>
@@ -135,121 +160,111 @@ body{
 <source src="music.mp3" type="audio/mpeg">
 </audio>
 
-<div class="header">
-<h2>💖 5 MESES CONTIGO 💖</h2>
-</div>
-
 <div id="game">
-<div id="start" style="text-align:center; padding-top:120px;">
-<h2>¿Lista mi gordita? 💕</h2>
+<div id="start" style="text-align:center; padding-top:140px;">
+<h2 style="color:white;">¿Lista mi gordita? 💖</h2>
 <button onclick="startGame()">JUGAR</button>
 </div>
 </div>
 
 <div id="final">
-<h2>💌 Para ti</h2>
-<p class="msg">
-Desde el 30 de octubre, mi mundo es completamente otro.<br><br>
+<div class="close" onclick="this.parentElement.style.display='none'">✖</div>
 
-No te voy a decir que eres una estrella…<br>
+<h2 style="color:var(--rojo)">💌 Para ti</h2>
+
+<p class="msg">
+Desde el 30 de octubre, mi mundo es otro.<br><br>
+
+No te voy a decir que eres una estrella,<br>
 te voy a decir que eres <b>mi persona favorita para pasar todo el tiempo</b>,<br>
-y eso vale muchísimo más.<br><br>
+y eso vale mucho más.<br><br>
 
 Gracias por aguantarme estos 5 meses,<br>
 por las risas que solo nosotros entendemos<br>
 y por ser tan tú.<br><br>
 
-No necesito que sea perfecto…<br>
-mientras sea <b>solo nosotros</b>.<br><br>
+No necesito que sea perfecto,<br>
+mientras sea solo nosotros.<br><br>
 
-<span style="font-size:1.4rem; color:var(--rojo); font-weight:bold;">
-Te amo muchísimo, mi gordita hermosa ❤️
-</span>
+<b style="color:var(--rojo)">
+Te amo muchísimo mi gordita hermosa ❤️
+</b>
 </p>
+
 </div>
 
 <script>
-const game = document.getElementById("game");
-const music = document.getElementById("music");
+const game=document.getElementById("game");
+const music=document.getElementById("music");
 
 let score=0;
 
-const frases=[
-"Divina 💖","Mi princesa 👑","Eres mía 💘",
-"Hermosa 😍","Te amo ❤️","Preciosa ✨"
-];
+const frases=["Divina 💖","Mi princesa 👑","Eres mía 💘","Hermosa 😍","Te amo ❤️"];
 
 /* estrellas */
-for(let i=0;i<80;i++){
-    let s=document.createElement("div");
-    s.className="star";
-    s.style.left=Math.random()*100+"vw";
-    s.style.top=Math.random()*100+"vh";
-    s.style.animationDuration=(Math.random()*2+1)+"s";
-    document.body.appendChild(s);
+for(let i=0;i<100;i++){
+let s=document.createElement("div");
+s.className="star";
+s.style.left=Math.random()*100+"vw";
+s.style.top=Math.random()*100+"vh";
+s.style.animationDuration=(Math.random()*2+1)+"s";
+document.body.appendChild(s);
 }
 
 /* iniciar */
 function startGame(){
-    document.getElementById("start").remove();
-    music.play();
-    spawn();
+document.getElementById("start").remove();
+music.play();
+spawn();
 }
 
 /* corazones */
 function spawn(){
-    if(score>=10){
-        end();
-        return;
-    }
-
-    const h=document.createElement("div");
-    h.className="heart";
-    h.innerHTML="❤️";
-
-    let x=Math.random()*(game.clientWidth-50);
-    let y=Math.random()*(game.clientHeight-50);
-
-    h.style.left=x+"px";
-    h.style.top=y+"px";
-
-    h.onclick=()=>{
-        score++;
-
-        /* frase */
-        const t=document.createElement("div");
-        t.className="text";
-        t.innerText=frases[Math.floor(Math.random()*frases.length)];
-        t.style.left=x+"px";
-        t.style.top=y+"px";
-        game.appendChild(t);
-
-        setTimeout(()=>t.remove(),1000);
-
-        /* partículas */
-        for(let i=0;i<15;i++){
-            let p=document.createElement("div");
-            p.className="particle";
-            p.innerHTML="💖";
-            p.style.left=x+"px";
-            p.style.top=y+"px";
-            p.style.setProperty('--x',(Math.random()*100-50)+"px");
-            p.style.setProperty('--y',(Math.random()*100-50)+"px");
-            game.appendChild(p);
-            setTimeout(()=>p.remove(),1000);
-        }
-
-        h.remove();
-        spawn();
-    };
-
-    game.appendChild(h);
+if(score>=10){
+document.getElementById("final").style.display="block";
+return;
 }
 
-/* final */
-function end(){
-    game.style.display="none";
-    document.getElementById("final").style.display="block";
+const h=document.createElement("div");
+h.className="heart";
+h.innerHTML="❤️";
+
+let x=Math.random()*(game.clientWidth-50);
+let y=Math.random()*(game.clientHeight-50);
+
+h.style.left=x+"px";
+h.style.top=y+"px";
+
+h.onclick=()=>{
+score++;
+
+/* frase */
+let t=document.createElement("div");
+t.className="text";
+t.innerText=frases[Math.floor(Math.random()*frases.length)];
+t.style.left=x+"px";
+t.style.top=y+"px";
+game.appendChild(t);
+setTimeout(()=>t.remove(),1000);
+
+/* partículas */
+for(let i=0;i<20;i++){
+let p=document.createElement("div");
+p.className="particle";
+p.innerHTML="💖";
+p.style.left=x+"px";
+p.style.top=y+"px";
+p.style.setProperty('--x',(Math.random()*150-75)+"px");
+p.style.setProperty('--y',(Math.random()*150-75)+"px");
+game.appendChild(p);
+setTimeout(()=>p.remove(),1000);
+}
+
+h.remove();
+spawn();
+};
+
+game.appendChild(h);
 }
 </script>
 
