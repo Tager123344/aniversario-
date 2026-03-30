@@ -111,6 +111,61 @@ body{
     to{transform:translateY(-60px); opacity:0;}
 }
 
+/* pantalla de contraseña */
+#passwordScreen {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    width: 90%;
+    max-width: 400px;
+    background: rgba(255,255,255,.15);
+    backdrop-filter: blur(10px);
+    padding: 30px;
+    border-radius: 25px;
+    display: none;
+    text-align: center;
+    color: white;
+    box-shadow: 0 0 20px rgba(255, 23, 68, 0.3);
+}
+
+#passwordScreen h3 {
+    margin-top: 0;
+    text-shadow: 0 0 10px #ff1744;
+    font-size: 24px;
+}
+
+#passwordScreen input {
+    padding: 12px;
+    border-radius: 15px;
+    border: none;
+    outline: none;
+    text-align: center;
+    font-family: 'Short Stack', cursive;
+    font-size: 18px;
+    width: 60%;
+    margin-bottom: 20px;
+    background: rgba(255,255,255,0.9);
+    color: #ff1744;
+    font-weight: bold;
+}
+
+#passwordScreen button {
+    padding: 12px 30px;
+    border: none;
+    border-radius: 50px;
+    background: #ff1744;
+    color: white;
+    font-family: 'Short Stack', cursive;
+    font-size: 16px;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+#passwordScreen button:hover {
+    transform: scale(1.05);
+}
+
 /* carta */
 #final{
     position:absolute;
@@ -180,8 +235,17 @@ body{
 <div id="game">
 <div id="start" style="text-align:center; padding-top:140px;">
 <h2 style="color:white;">Natasha 💖</h2>
-<button onclick="startGame()">JUGAR</button>
+<button onclick="startGame()" style="padding:12px 30px; border:none; border-radius:50px; background:#ff1744; color:white; font-family:'Short Stack', cursive; font-size:16px; cursor:pointer;">JUGAR</button>
 </div>
+</div>
+
+<div id="passwordScreen">
+    <h3>¡Alto ahí! 🔒</h3>
+    <p>Ingresa nuestra fecha especial para ver tu sorpresa:</p>
+    <input type="password" id="passInput" placeholder="DDMMAAAA">
+    <br>
+    <button onclick="checkPassword()">Desbloquear 💖</button>
+    <p id="passError" style="color:#ffb3c6; font-size:14px; display:none; text-shadow:0 0 5px red;">Esa no es, mi amor. Intenta de nuevo ❤️</p>
 </div>
 
 <div id="final">
@@ -267,8 +331,8 @@ spawn();
 /* corazones */
 function spawn(){
 if(score>=10){
-showFinal();
-return;
+    showPasswordScreen();
+    return;
 }
 
 const h=document.createElement("div");
@@ -322,10 +386,26 @@ setTimeout(()=>p.remove(),1000);
 }
 }
 
+/* Mostrar pantalla de contraseña */
+function showPasswordScreen(){
+    game.style.display="none";
+    document.getElementById("passwordScreen").style.display="block";
+}
+
+/* Revisar la contraseña */
+function checkPassword(){
+    const input = document.getElementById("passInput").value;
+    if(input === "30102025"){
+        document.getElementById("passwordScreen").style.display="none";
+        showFinal();
+    } else {
+        document.getElementById("passError").style.display="block";
+        document.getElementById("passInput").value = ""; // Limpia la caja para que intente de nuevo
+    }
+}
+
 /* final */
 function showFinal(){
-game.style.display="none";
-
 let final=document.getElementById("final");
 final.style.display="block";
 
@@ -342,6 +422,9 @@ score=0;
 document.getElementById("final").classList.remove("show");
 document.getElementById("final").style.display="none";
 document.getElementById("restart").style.display="none";
+document.getElementById("passwordScreen").style.display="none";
+document.getElementById("passInput").value = "";
+document.getElementById("passError").style.display="none";
 
 game.innerHTML="";
 game.style.display="block";
