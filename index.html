@@ -24,7 +24,7 @@ body{
     100%{background-position:0%}
 }
 
-/* 🌧️ estrellas lluvia */
+/* 🌧️ estrellas */
 .star{
     position:fixed;
     border-radius:50%;
@@ -39,6 +39,25 @@ body{
 @keyframes twinkle{
     from{opacity:.3;}
     to{opacity:1; transform:scale(1.5);}
+}
+
+/* 🌸 flores */
+.flower{
+    position:fixed;
+    font-size:18px;
+    pointer-events:none;
+    animation:fallFlower linear forwards;
+}
+
+@keyframes fallFlower{
+    0%{
+        transform:translateY(-10px) rotate(0deg);
+        opacity:1;
+    }
+    100%{
+        transform:translateY(110vh) rotate(360deg);
+        opacity:0;
+    }
 }
 
 /* 🎮 juego */
@@ -126,7 +145,7 @@ body{
     color:#ff1744;
 }
 
-/* ❤️ efecto final */
+/* ❤️ glow final */
 .love{
     color:#ff1744;
     display:block;
@@ -140,17 +159,27 @@ body{
     to{text-shadow:0 0 25px #ff4d88;}
 }
 
-/* 🎬 modo cine */
-body.cinematic{
-    filter: brightness(0.4);
-    transition: 2s ease;
+/* 🔁 botón repetir */
+#restart{
+    display:none;
+    position:absolute;
+    bottom:40px;
+    left:50%;
+    transform:translateX(-50%);
+    padding:12px 30px;
+    border:none;
+    border-radius:50px;
+    background:#ff1744;
+    color:white;
+    font-size:16px;
+    cursor:pointer;
 }
 </style>
 </head>
 
 <body>
 
-<audio id="music" loop>
+<audio id="music" loop autoplay>
 <source src="music.mp3">
 </audio>
 
@@ -183,6 +212,8 @@ Te amo muchísimo mi gordita hermosa ❤️
 </p>
 </div>
 
+<button id="restart" onclick="restartGame()">Otra vez ❤️</button>
+
 <script>
 const game=document.getElementById("game");
 const music=document.getElementById("music");
@@ -190,41 +221,49 @@ const music=document.getElementById("music");
 let score=0;
 
 const frases=[
-"divina 💖",
-"mi princesa 👑",
-"eres mía ❤️",
-"te adoro 😘",
-"mi todo 💕"
+"divina 💖","mi princesa 👑","eres mía ❤️","te adoro 😘","mi todo 💕"
 ];
 
-/* 🌧️ lluvia estrellas */
+/* 🌧️ estrellas */
 setInterval(()=>{
-    let s=document.createElement("div");
-    s.className="star";
+let s=document.createElement("div");
+s.className="star";
 
-    let size=Math.random()*3+1;
-    s.style.width=size+"px";
-    s.style.height=size+"px";
+let size=Math.random()*3+1;
+s.style.width=size+"px";
+s.style.height=size+"px";
 
-    s.style.left=Math.random()*100+"vw";
-    s.style.top="-10px";
+s.style.left=Math.random()*100+"vw";
+s.style.top="-10px";
 
-    s.style.background=Math.random()>0.5?"#fff":"#ff4d88";
-    s.style.animationDuration=(Math.random()*3+2)+"s";
+s.style.background=Math.random()>0.5?"#fff":"#ff4d88";
+s.style.animationDuration=(Math.random()*3+2)+"s";
 
-    document.body.appendChild(s);
-    setTimeout(()=>s.remove(),5000);
+document.body.appendChild(s);
+setTimeout(()=>s.remove(),5000);
 },80);
+
+/* 🌸 flores anime */
+setInterval(()=>{
+let f=document.createElement("div");
+f.className="flower";
+f.innerHTML="🌸";
+
+f.style.left=Math.random()*100+"vw";
+f.style.animationDuration=(Math.random()*5+5)+"s";
+
+document.body.appendChild(f);
+setTimeout(()=>f.remove(),10000);
+},500);
 
 /* 🎮 iniciar */
 function startGame(){
 document.getElementById("start").remove();
-music.volume=1;
 music.play();
 spawn();
 }
 
-/* ❤️ generar corazones */
+/* ❤️ corazones */
 function spawn(){
 if(score>=10){
 showFinal();
@@ -282,37 +321,22 @@ setTimeout(()=>p.remove(),1000);
 }
 }
 
-/* 🎬 fade música */
-function fadeOutMusic(){
-let vol=music.volume;
-
-let fade=setInterval(()=>{
-if(vol>0.05){
-vol-=0.05;
-music.volume=vol;
-}else{
-music.volume=0;
-clearInterval(fade);
-}
-},200);
-}
-
-/* 💌 final cinematográfico */
+/* 💌 final */
 function showFinal(){
+game.style.display="none";
 
-fadeOutMusic();
-
-document.body.classList.add("cinematic");
-
-setTimeout(()=>{
 let final=document.getElementById("final");
 final.style.display="block";
 
 setTimeout(()=>{
 final.classList.add("show");
+document.getElementById("restart").style.display="block";
 },200);
+}
 
-},1500);
+/* 🔁 reiniciar */
+function restartGame(){
+location.reload();
 }
 </script>
 
