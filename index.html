@@ -9,29 +9,19 @@
 <link href="https://fonts.googleapis.com/css2?family=Short+Stack&family=Gaegu:wght@700&display=swap" rel="stylesheet">
 
 <style>
-:root{
-    --rojo:#ff1744;
-    --rosa:#ff4d88;
-}
-
-/* 🌈 FONDO BONITO */
 body{
     margin:0;
-    height:100vh;
     overflow:hidden;
     font-family:'Short Stack', cursive;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    background:radial-gradient(circle at top,#ff6b81,#ff1744,#1a1a2e);
-    transition:background 1s;
+    background:radial-gradient(circle,#ff4d88,#1a1a2e);
+    height:100vh;
 }
 
-/* ✨ ESTRELLAS */
+/* 🌌 estrellas */
 .star{
     position:fixed;
-    width:3px;
-    height:3px;
+    width:2px;
+    height:2px;
     background:white;
     border-radius:50%;
     animation:twinkle 2s infinite alternate;
@@ -39,54 +29,64 @@ body{
 
 @keyframes twinkle{
     from{opacity:.2;}
-    to{opacity:1; transform:scale(2);}
+    to{opacity:1; transform:scale(1.5);}
 }
 
-/* CONTENEDOR */
+/* 🎮 juego */
 #game{
-    margin-top:40px;
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
     width:90%;
     max-width:500px;
     height:420px;
     border-radius:25px;
-    backdrop-filter:blur(12px);
     background:rgba(255,255,255,.15);
-    border:2px solid rgba(255,255,255,.3);
-    position:relative;
+    backdrop-filter:blur(10px);
     overflow:hidden;
 }
 
-/* BOTÓN */
+/* botón */
 button{
     padding:15px 40px;
     border:none;
     border-radius:50px;
-    background:var(--rojo);
+    background:#ff1744;
     color:white;
     font-size:18px;
     cursor:pointer;
-    box-shadow:0 0 20px rgba(255,0,80,.6);
 }
 
-/* ❤️ CORAZONES */
+/* corazones */
 .heart{
     position:absolute;
     font-size:42px;
     cursor:pointer;
-    animation:float 2s infinite alternate ease-in-out;
+    animation:float 2s infinite alternate;
 }
 
 @keyframes float{
-    from{transform:translateY(0);}
     to{transform:translateY(-20px);}
 }
 
-/* FRASES */
+/* partículas */
+.particle{
+    position:absolute;
+    animation:explode 1s forwards;
+}
+
+@keyframes explode{
+    to{
+        transform:translate(var(--x),var(--y));
+        opacity:0;
+    }
+}
+
+/* texto */
 .text{
     position:absolute;
     color:white;
-    font-weight:bold;
-    text-shadow:0 0 10px #ff1744;
     animation:up 1s forwards;
 }
 
@@ -94,62 +94,49 @@ button{
     to{transform:translateY(-60px); opacity:0;}
 }
 
-/* 💥 PARTICULAS */
-.particle{
+/* 🌳 árbol */
+#tree{
     position:absolute;
-    font-size:14px;
-    animation:explode 1s forwards;
-}
-
-@keyframes explode{
-    to{
-        transform:translate(var(--x),var(--y)) scale(1.5);
-        opacity:0;
-    }
-}
-
-/* 💌 FINAL */
-#final{
+    width:100%;
+    height:100%;
     display:none;
-    position:fixed;
+}
+
+/* flores */
+.flower{
+    position:absolute;
+    width:6px;
+    height:6px;
+    background:#ffd54f;
+    border-radius:50%;
+    box-shadow:0 0 10px #ffeb3b;
+    opacity:0;
+    animation:grow 2s forwards;
+}
+
+@keyframes grow{
+    to{opacity:1; transform:scale(1.5);}
+}
+
+/* 💌 final */
+#final{
+    position:absolute;
     top:50%;
     left:50%;
     transform:translate(-50%,-50%);
     width:90%;
     max-width:400px;
-    max-height:70vh;
     background:white;
-    border-radius:20px;
     padding:20px;
-    overflow:auto;
+    border-radius:20px;
+    display:none;
     box-shadow:0 10px 40px rgba(0,0,0,.4);
-    animation:pop .6s;
 }
 
-@keyframes pop{
-    from{transform:translate(-50%,-50%) scale(0);}
-    to{transform:translate(-50%,-50%) scale(1);}
-}
-
-/* NOMBRES */
 .names{
     text-align:center;
     font-size:2rem;
-    color:var(--rojo);
-    font-weight:bold;
-    margin-bottom:15px;
-    animation:fadeIn 2s ease;
-}
-
-@keyframes fadeIn{
-    from{opacity:0; transform:scale(0.5);}
-    to{opacity:1; transform:scale(1);}
-}
-
-/* TEXTO */
-.msg{
-    line-height:1.6;
-    color:#333;
+    color:#ff1744;
 }
 </style>
 </head>
@@ -157,24 +144,25 @@ button{
 <body>
 
 <audio id="music" loop>
-<source src="music.mp3" type="audio/mpeg">
+<source src="music.mp3">
 </audio>
 
 <div id="game">
 <div id="start" style="text-align:center; padding-top:140px;">
-<h2 style="color:white;">¿Lista Natasha? 💖</h2>
+<h2 style="color:white;">Natasha 💖</h2>
 <button onclick="startGame()">JUGAR</button>
 </div>
 </div>
 
+<div id="tree"></div>
+
 <div id="final">
 <div class="names">Henry ❤️ Natasha</div>
-
-<p class="msg">
+<p>
 Desde el 30 de octubre, mi mundo es otro.<br><br>
 
 No te voy a decir que eres una estrella,<br>
-te voy a decir que eres <b>mi persona favorita para pasar todo el tiempo</b>,<br>
+te voy a decir que eres mi persona favorita para pasar todo el tiempo,<br>
 y eso vale mucho más.<br><br>
 
 Gracias por aguantarme estos 5 meses,<br>
@@ -184,8 +172,8 @@ y por ser tan tú.<br><br>
 No necesito que sea perfecto,<br>
 mientras sea solo nosotros.<br><br>
 
-<b style="color:var(--rojo)">
-Te amo muchísimo, Natasha ❤️
+<b style="color:#ff1744">
+Te amo muchísimo mi gordita hermosa ❤️
 </b>
 </p>
 </div>
@@ -193,35 +181,28 @@ Te amo muchísimo, Natasha ❤️
 <script>
 const game=document.getElementById("game");
 const music=document.getElementById("music");
+const tree=document.getElementById("tree");
 
 let score=0;
 
-const frases=[
-"Divina 💖","Mi princesa 👑","Eres mía 💘",
-"Hermosa 😍","Te amo ❤️"
-];
-
 /* estrellas */
-for(let i=0;i<120;i++){
+for(let i=0;i<100;i++){
 let s=document.createElement("div");
 s.className="star";
 s.style.left=Math.random()*100+"vw";
 s.style.top=Math.random()*100+"vh";
-s.style.animationDuration=(Math.random()*2+1)+"s";
 document.body.appendChild(s);
 }
 
-/* iniciar */
 function startGame(){
 document.getElementById("start").remove();
 music.play();
 spawn();
 }
 
-/* corazones */
 function spawn(){
 if(score>=10){
-surprise();
+showTree();
 return;
 }
 
@@ -229,8 +210,8 @@ const h=document.createElement("div");
 h.className="heart";
 h.innerHTML="❤️";
 
-let x=Math.random()*(game.clientWidth-50);
-let y=Math.random()*(game.clientHeight-50);
+let x=Math.random()*400;
+let y=Math.random()*350;
 
 h.style.left=x+"px";
 h.style.top=y+"px";
@@ -238,24 +219,14 @@ h.style.top=y+"px";
 h.onclick=()=>{
 score++;
 
-/* frase */
-let t=document.createElement("div");
-t.className="text";
-t.innerText=frases[Math.floor(Math.random()*frases.length)];
-t.style.left=x+"px";
-t.style.top=y+"px";
-game.appendChild(t);
-setTimeout(()=>t.remove(),1000);
-
-/* partículas */
-for(let i=0;i<20;i++){
+for(let i=0;i<15;i++){
 let p=document.createElement("div");
 p.className="particle";
 p.innerHTML="💖";
 p.style.left=x+"px";
 p.style.top=y+"px";
-p.style.setProperty('--x',(Math.random()*150-75)+"px");
-p.style.setProperty('--y',(Math.random()*150-75)+"px");
+p.style.setProperty('--x',(Math.random()*100-50)+"px");
+p.style.setProperty('--y',(Math.random()*100-50)+"px");
 game.appendChild(p);
 setTimeout(()=>p.remove(),1000);
 }
@@ -267,14 +238,34 @@ spawn();
 game.appendChild(h);
 }
 
-/* 💥 MOMENTO SORPRESA */
-function surprise(){
-document.body.style.background="#000";
+/* 🌳 árbol */
+function showTree(){
+game.style.display="none";
+tree.style.display="block";
+
+let centerX=window.innerWidth/2;
+let baseY=window.innerHeight/1.5;
+
+for(let i=0;i<150;i++){
+let f=document.createElement("div");
+f.className="flower";
+
+let angle=Math.random()*Math.PI;
+let radius=Math.random()*120;
+
+let x=centerX+Math.cos(angle)*radius;
+let y=baseY-Math.sin(angle)*radius;
+
+f.style.left=x+"px";
+f.style.top=y+"px";
+f.style.animationDelay=i*0.02+"s";
+
+tree.appendChild(f);
+}
 
 setTimeout(()=>{
-document.getElementById("game").style.display="none";
 document.getElementById("final").style.display="block";
-},1000);
+},4000);
 }
 </script>
 
